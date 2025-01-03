@@ -81,51 +81,50 @@ type JobTemplateResourceModel struct {
 }
 
 type JobTemplate struct {
-	Id                             int    `json:"id,omitempty"`
-	Name                           string `json:"name,omitempty"`
+	Name                           string `json:"name"`
 	Description                    string `json:"description"`
-	JobType                        string `json:"job_type,omitempty"`
-	Inventory                      int    `json:"inventory,omitempty"`
-	Project                        int    `json:"project,omitempty"`
-	Playbook                       string `json:"playbook,omitempty"`
-	ScmBranch                      string `json:"scm_branch,omitempty"`
-	Forks                          int    `json:"forks,omitempty"`
-	Limit                          string `json:"limit,omitempty"`
-	Verbosity                      int    `json:"verbosity,omitempty"`
-	ExtraVars                      string `json:"extra_vars,omitempty"`
-	JobTags                        string `json:"job_tags,omitempty"`
-	ForceHandlers                  bool   `json:"force_handlers,omitempty"`
-	SkipTags                       string `json:"skip_tags,omitempty"`
-	StartAtTask                    string `json:"start_at_tags,omitempty"`
-	Timeout                        int    `json:"timeout,omitempty"`
-	UseFactCache                   bool   `json:"use_fact_cache,omitempty"`
-	ExecutionEnvironment           int    `json:"execution_environment,omitempty"`
-	HostConfigKey                  string `json:"host_config_key,omitempty"`
-	AskScmBranchOnLaunch           bool   `json:"ask_scm_branch_on_launch,omitempty"`
-	AskDiffModeOnLaunch            bool   `json:"ask_diff_mode_on_launch,omitempty"`
-	AskVariablesOnLaunch           bool   `json:"ask_variables_on_launch,omitempty"`
-	AskLimitOnLaunch               bool   `json:"ask_limit_on_launch,omitempty"`
-	AskTagsOnLaunch                bool   `json:"ask_tags_on_launch,omitempty"`
-	AskSkipTagsOnLaunch            bool   `json:"ask_skip_tags_on_launch,omitempty"`
-	AskJobTypeOnLaunch             bool   `json:"ask_job_type_on_launch,omitempty"`
-	AskVerbosityOnLaunch           bool   `json:"ask_verbosity_on_launch,omitempty"`
-	AskInventoryOnLaunch           bool   `json:"ask_inventory_on_launch,omitempty"`
-	AskCredentialOnLaunch          bool   `json:"ask_credential_on_launch,omitempty"`
-	AskExecutionEnvironmenOnLaunch bool   `json:"ask_execution_environment_on_launch,omitempty"`
-	AskLablesOnLaunch              bool   `json:"ask_labels_on_launch,omitempty"`
-	AskForksOnLaunch               bool   `json:"ask_forks_on_launch,omitempty"`
-	AskJobSliceCountOnLaunch       bool   `json:"ask_job_slice_count_on_launch,omitempty"`
-	AskTimeoutOnLaunch             bool   `json:"ask_timeout_on_launch,omitempty"`
-	AskInstanceGroupsOnLaunch      bool   `json:"ask_instance_groups_on_launch,omitempty"`
-	SurveyEnabled                  bool   `json:"survey_enabled,omitempty"`
-	BecomeEnabled                  bool   `json:"become_enabled,omitempty"`
-	DiffMode                       bool   `json:"diff_mode,omitempty"`
-	AllowSimultaneous              bool   `json:"allow_simultaneous,omitempty"`
-	CustomVirtualEnv               any    `json:"custom_virtualenv,omitempty"` //blank is returned by api as "custom_virtual": null (not "")
-	JobSliceCount                  int    `json:"job_slice_count,omitempty"`
-	WebhookService                 string `json:"webhook_service,omitempty"`
-	WebhookCredential              any    `json:"webhook_credential,omitempty"` //blank is returned by api as "webhook_credentials": null (not "")
-	PreventInstanceGroupFallback   bool   `json:"prevent_instance_group_fallback,omitempty"`
+	JobType                        string `json:"job_type"`
+	Inventory                      int    `json:"inventory"`
+	Project                        int    `json:"project"`
+	Playbook                       string `json:"playbook"`
+	ScmBranch                      string `json:"scm_branch"`
+	Forks                          int    `json:"forks"`
+	Limit                          string `json:"limit"`
+	Verbosity                      int    `json:"verbosity"`
+	ExtraVars                      string `json:"extra_vars"`
+	JobTags                        string `json:"job_tags"`
+	ForceHandlers                  bool   `json:"force_handlers"`
+	SkipTags                       string `json:"skip_tags"`
+	StartAtTask                    string `json:"start_at_tags"`
+	Timeout                        int    `json:"timeout"`
+	UseFactCache                   bool   `json:"use_fact_cache"`
+	ExecutionEnvironment           int    `json:"execution_environment"`
+	HostConfigKey                  string `json:"host_config_key"`
+	AskScmBranchOnLaunch           bool   `json:"ask_scm_branch_on_launch"`
+	AskDiffModeOnLaunch            bool   `json:"ask_diff_mode_on_launch"`
+	AskVariablesOnLaunch           bool   `json:"ask_variables_on_launch"`
+	AskLimitOnLaunch               bool   `json:"ask_limit_on_launch"`
+	AskTagsOnLaunch                bool   `json:"ask_tags_on_launch"`
+	AskSkipTagsOnLaunch            bool   `json:"ask_skip_tags_on_launch"`
+	AskJobTypeOnLaunch             bool   `json:"ask_job_type_on_launch"`
+	AskVerbosityOnLaunch           bool   `json:"ask_verbosity_on_launch"`
+	AskInventoryOnLaunch           bool   `json:"ask_inventory_on_launch"`
+	AskCredentialOnLaunch          bool   `json:"ask_credential_on_launch"`
+	AskExecutionEnvironmenOnLaunch bool   `json:"ask_execution_environment_on_launch"`
+	AskLablesOnLaunch              bool   `json:"ask_labels_on_launch"`
+	AskForksOnLaunch               bool   `json:"ask_forks_on_launch"`
+	AskJobSliceCountOnLaunch       bool   `json:"ask_job_slice_count_on_launch"`
+	AskTimeoutOnLaunch             bool   `json:"ask_timeout_on_launch"`
+	AskInstanceGroupsOnLaunch      bool   `json:"ask_instance_groups_on_launch"`
+	SurveyEnabled                  bool   `json:"survey_enabled"`
+	BecomeEnabled                  bool   `json:"become_enabled"`
+	DiffMode                       bool   `json:"diff_mode"`
+	AllowSimultaneous              bool   `json:"allow_simultaneous"`
+	CustomVirtualEnv               any    `json:"custom_virtualenv"` //blank is returned by api as "custom_virtual": null (not "")
+	JobSliceCount                  int    `json:"job_slice_count"`
+	WebhookService                 string `json:"webhook_service"`
+	WebhookCredential              any    `json:"webhook_credential"` //blank is returned by api as "webhook_credentials": null (not "")
+	PreventInstanceGroupFallback   bool   `json:"prevent_instance_group_fallback"`
 }
 
 func (r *JobTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -901,17 +900,19 @@ func (r *JobTemplateResource) Read(ctx context.Context, req resource.ReadRequest
 
 	// data.CustomVirtualEnv = types.StringValue(responseData.CustomVirtualEnv)
 	if !(data.CustomVirtualEnv.IsNull() && responseData.CustomVirtualEnv == nil) {
-
-		if customVirtualEnv, ok := responseData.CustomVirtualEnv.(string); ok {
-			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("custom_virtualenv"), customVirtualEnv)...)
+		if responseData.CustomVirtualEnv == nil {
+			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("custom_virtualenv"), "")...)
 		} else {
-			resp.Diagnostics.AddError(
-				"Invalid Type",
-				"Expected responseData.CustomVirtualEnv to be a string",
-			)
-			return
+			if customVirtualEnv, ok := responseData.CustomVirtualEnv.(string); ok {
+				resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("custom_virtualenv"), customVirtualEnv)...)
+			} else {
+				resp.Diagnostics.AddError(
+					"Invalid Type",
+					"Expected responseData.CustomVirtualEnv to be a string",
+				)
+				return
+			}
 		}
-
 		if resp.Diagnostics.HasError() {
 			return
 		}
@@ -933,15 +934,18 @@ func (r *JobTemplateResource) Read(ctx context.Context, req resource.ReadRequest
 
 	//data.WebhookCredential = types.StringValue(responseData.WebhookCredential.(string))
 	if !(data.WebhookCredential.IsNull() && responseData.WebhookCredential == nil) {
-
-		if webhookCredential, ok := responseData.WebhookCredential.(string); ok {
-			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("webhook_credential"), webhookCredential)...)
+		if responseData.WebhookCredential == nil {
+			resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("webhook_credential"), "")...)
 		} else {
-			resp.Diagnostics.AddError(
-				"Invalid Type",
-				"Expected responseData.WebhookCredential to be a string",
-			)
-			return
+			if webhookCredential, ok := responseData.WebhookCredential.(string); ok {
+				resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("webhook_credential"), webhookCredential)...)
+			} else {
+				resp.Diagnostics.AddError(
+					"Invalid Type",
+					"Expected responseData.WebhookCredential to be a string",
+				)
+				return
+			}
 		}
 
 		if resp.Diagnostics.HasError() {
