@@ -51,6 +51,8 @@ func (r *WorkflowJobTemplatesResource) Schema(ctx context.Context, req resource.
 			},
 			"extra_vars": schema.StringAttribute{
 				Optional: true,
+				Default:  stringdefault.StaticString("---"),
+				Computed: true,
 			},
 			"organization": schema.Int32Attribute{
 				Required: true,

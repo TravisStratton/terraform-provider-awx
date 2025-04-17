@@ -444,7 +444,7 @@ type WorkflowJobTemplateAPIModel struct {
 	AskVariablesOnLaunch bool   `json:"ask_variables_on_launch"`
 	Inventory            any    `json:"inventory"`
 	Limit                string `json:"limit,omitempty"`
-	ScmBranch            string `json:"scm_branch"`
+	ScmBranch            string `json:"scm_branch,omitempty"`
 	AskInventoryOnLaunch bool   `json:"ask_inventory_on_launch"`
 	AskScmBranchOnLaunch bool   `json:"ask_scm_branch_on_launch"`
 	AskLimitOnLaunch     bool   `json:"ask_limit_on_launch"`
@@ -453,6 +453,6 @@ type WorkflowJobTemplateAPIModel struct {
 	AskLabelsOnLaunch    bool   `json:"ask_labels_on_launch"`
 	AskSkipTagsOnLaunch  bool   `json:"ask_skip_tags_on_launch"`
 	AskTagsOnLaunch      bool   `json:"ask_tags_on_launch"`
-	SkipTags             string `json:"skip_tags"`
-	JobTags              string `json:"job_tags"`
+	SkipTags             string `json:"skip_tags,omitempty"`
+	JobTags              string `json:"job_tags,omitempty"`
 }
