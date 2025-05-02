@@ -164,7 +164,7 @@ func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	client.endpoint = endpoint
 	client.auth = auth
 
-	url := "/api/v2/me/"
+	url := "/api/controller/v2/me/"
 	_, _, err := client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(

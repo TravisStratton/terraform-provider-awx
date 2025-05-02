@@ -104,7 +104,7 @@ func (r *OrganizationResource) Create(ctx context.Context, req resource.CreateRe
 		bodyData.MaxHosts = int(data.MaxHosts.ValueInt32())
 	}
 
-	url := "/api/v2/organizations/"
+	url := "/api/gateway/v1/organizations/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -134,7 +134,7 @@ func (r *OrganizationResource) Read(ctx context.Context, req resource.ReadReques
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/organizations/%d/", id)
+	url := fmt.Sprintf("/api/gateway/v1/organizations/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -213,7 +213,7 @@ func (r *OrganizationResource) Update(ctx context.Context, req resource.UpdateRe
 		bodyData.MaxHosts = int(data.MaxHosts.ValueInt32())
 	}
 
-	url := fmt.Sprintf("/api/v2/organizations/%d/", id)
+	url := fmt.Sprintf("/api/gateway/v1/organizations/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -240,7 +240,7 @@ func (r *OrganizationResource) Delete(ctx context.Context, req resource.DeleteRe
 			fmt.Sprintf("Unable to convert id: %v.", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/organizations/%d/", id)
+	url := fmt.Sprintf("/api/gateway/v1/organizations/%d/", id)
 
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
