@@ -137,7 +137,7 @@ func (r *CredentialTypeResource) Create(ctx context.Context, req resource.Create
 		bodyData.Kind = data.Kind.ValueString()
 	}
 
-	url := "/api/v2/credential_types/"
+	url := "credential_types/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -178,7 +178,7 @@ func (r *CredentialTypeResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_types/%d/", id)
+	url := fmt.Sprintf("credential_types/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -334,7 +334,7 @@ func (r *CredentialTypeResource) Update(ctx context.Context, req resource.Update
 		bodyData.Kind = data.Kind.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_types/%d/", id)
+	url := fmt.Sprintf("credential_types/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -363,7 +363,7 @@ func (r *CredentialTypeResource) Delete(ctx context.Context, req resource.Delete
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_types/%d/", id)
+	url := fmt.Sprintf("credential_types/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

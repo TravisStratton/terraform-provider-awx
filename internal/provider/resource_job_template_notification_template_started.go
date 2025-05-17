@@ -86,7 +86,7 @@ func (r *JobTemplateNotifTemplStartedResource) Create(ctx context.Context, req r
 			fmt.Sprintf("Unable to convert id: %v. ", data.JobTemplateId.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/notification_templates_started/", id)
+	url := fmt.Sprintf("job_templates/%d/notification_templates_started/", id)
 
 	var relatedIds []int
 
@@ -125,7 +125,7 @@ func (r *JobTemplateNotifTemplStartedResource) Read(ctx context.Context, req res
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/notification_templates_started/", id)
+	url := fmt.Sprintf("job_templates/%d/notification_templates_started/", id)
 
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -180,7 +180,7 @@ func (r *JobTemplateNotifTemplStartedResource) Update(ctx context.Context, req r
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/notification_templates_started/", id)
+	url := fmt.Sprintf("job_templates/%d/notification_templates_started/", id)
 
 	body, _, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
@@ -259,7 +259,7 @@ func (r *JobTemplateNotifTemplStartedResource) Delete(ctx context.Context, req r
 			fmt.Sprintf("Unable to convert id: %v. ", data.JobTemplateId.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/notification_templates_started/", id)
+	url := fmt.Sprintf("job_templates/%d/notification_templates_started/", id)
 
 	var RelatedIds []int
 

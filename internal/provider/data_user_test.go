@@ -2,6 +2,7 @@ package provider
 
 import (
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
@@ -13,103 +14,192 @@ import (
 )
 
 func TestAccUserDataSource(t *testing.T) {
-	resource1 := UserAPIModel{
-		Username:    "test-user-" + acctest.RandString(5),
-		FirstName:   "test-firstname",
-		LastName:    "test-lastname",
-		Email:       "test@example.com",
-		Password:    acctest.RandString(20),
-		IsSuperuser: true,
-	}
-	resource2 := UserAPIModel{
-		Username:        "test-user-" + acctest.RandString(5),
-		FirstName:       "test-firstname",
-		LastName:        "test-lastname",
-		Email:           "test@example.com",
-		Password:        acctest.RandString(20),
-		IsSystemAuditor: true,
-	}
-	resource.Test(t, resource.TestCase{
-		PreCheck: func() { testAccPreCheck(t) },
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(tfversion.Version1_1_0), // built-in check from tfversion package
-		},
-		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
-		Steps: []resource.TestStep{
-			// Read by ID testing
-			{
-				Config: testAccUserDataSourceIdConfig(resource1),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("username"),
-						knownvalue.StringExact(resource1.Username),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("first_name"),
-						knownvalue.StringExact(resource1.FirstName),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("last_name"),
-						knownvalue.StringExact(resource1.LastName),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("email"),
-						knownvalue.StringExact(resource1.Email),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("is_superuser"),
-						knownvalue.Bool(resource1.IsSuperuser),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-id",
-						tfjsonpath.New("is_system_auditor"),
-						knownvalue.Bool(false),
-					),
+	if os.Getenv("TOWER_PLATFORM") == "awx" || os.Getenv("TOWER_PLATFORM") == "aap2.4" {
+		resource1 := UserAPIModel{
+			Username:    "test-user-" + acctest.RandString(5),
+			FirstName:   "test-firstname",
+			LastName:    "test-lastname",
+			Email:       "test@example.com",
+			Password:    acctest.RandString(20),
+			IsSuperuser: true,
+		}
+		resource2 := UserAPIModel{
+			Username:        "test-user-" + acctest.RandString(5),
+			FirstName:       "test-firstname",
+			LastName:        "test-lastname",
+			Email:           "test@example.com",
+			Password:        acctest.RandString(20),
+			IsSystemAuditor: true,
+		}
+		resource.Test(t, resource.TestCase{
+			PreCheck: func() { testAccPreCheck(t) },
+			TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+				tfversion.SkipBelow(tfversion.Version1_1_0), // built-in check from tfversion package
+			},
+			ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+			Steps: []resource.TestStep{
+				// Read by ID testing
+				{
+					Config: testAccUserDataSourceIdConfig(resource1),
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("username"),
+							knownvalue.StringExact(resource1.Username),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("first_name"),
+							knownvalue.StringExact(resource1.FirstName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("last_name"),
+							knownvalue.StringExact(resource1.LastName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("email"),
+							knownvalue.StringExact(resource1.Email),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("is_superuser"),
+							knownvalue.Bool(resource1.IsSuperuser),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("is_system_auditor"),
+							knownvalue.Bool(false),
+						),
+					},
+				},
+				// Read by name testing
+				{
+					Config: testAccUserDataSourceNameConfig(resource2),
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("username"),
+							knownvalue.StringExact(resource2.Username),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("first_name"),
+							knownvalue.StringExact(resource2.FirstName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("last_name"),
+							knownvalue.StringExact(resource2.LastName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("email"),
+							knownvalue.StringExact(resource2.Email),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("is_superuser"),
+							knownvalue.Bool(false),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("is_system_auditor"),
+							knownvalue.Bool(resource2.IsSystemAuditor),
+						),
+					},
 				},
 			},
-			// Read by name testing
-			{
-				Config: testAccUserDataSourceNameConfig(resource2),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("username"),
-						knownvalue.StringExact(resource2.Username),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("first_name"),
-						knownvalue.StringExact(resource2.FirstName),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("last_name"),
-						knownvalue.StringExact(resource2.LastName),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("email"),
-						knownvalue.StringExact(resource2.Email),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("is_superuser"),
-						knownvalue.Bool(false),
-					),
-					statecheck.ExpectKnownValue(
-						"data.awx_user.test-name",
-						tfjsonpath.New("is_system_auditor"),
-						knownvalue.Bool(resource2.IsSystemAuditor),
-					),
+		})
+	} else {
+		resource1 := UserAPIModel{
+			Username:    "test-user-" + acctest.RandString(5),
+			FirstName:   "test-firstname",
+			LastName:    "test-lastname",
+			Email:       "test@example.com",
+			Password:    acctest.RandString(20),
+			IsSuperuser: true,
+		}
+		resource2 := UserAPIModel{
+			Username:  "test-user-" + acctest.RandString(5),
+			FirstName: "test-firstname",
+			LastName:  "test-lastname",
+			Email:     "test@example.com",
+			Password:  acctest.RandString(20),
+		}
+		resource.Test(t, resource.TestCase{
+			PreCheck: func() { testAccPreCheck(t) },
+			TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+				tfversion.SkipBelow(tfversion.Version1_1_0), // built-in check from tfversion package
+			},
+			ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
+			Steps: []resource.TestStep{
+				// Read by ID testing
+				{
+					Config: testAccUserDataSourceIdConfig(resource1),
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("username"),
+							knownvalue.StringExact(resource1.Username),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("first_name"),
+							knownvalue.StringExact(resource1.FirstName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("last_name"),
+							knownvalue.StringExact(resource1.LastName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("email"),
+							knownvalue.StringExact(resource1.Email),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-id",
+							tfjsonpath.New("is_superuser"),
+							knownvalue.Bool(resource1.IsSuperuser),
+						),
+					},
+				},
+				// Read by name testing
+				{
+					Config: testAccUserDataSourceNameConfig(resource2),
+					ConfigStateChecks: []statecheck.StateCheck{
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("username"),
+							knownvalue.StringExact(resource2.Username),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("first_name"),
+							knownvalue.StringExact(resource2.FirstName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("last_name"),
+							knownvalue.StringExact(resource2.LastName),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("email"),
+							knownvalue.StringExact(resource2.Email),
+						),
+						statecheck.ExpectKnownValue(
+							"data.awx_user.test-name",
+							tfjsonpath.New("is_superuser"),
+							knownvalue.Bool(false),
+						),
+					},
 				},
 			},
-		},
-	})
+		})
+	}
 }
 
 func testAccUserDataSourceIdConfig(resource UserAPIModel) string {

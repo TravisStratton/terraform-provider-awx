@@ -177,7 +177,7 @@ func (r *InstanceGroupResource) Create(ctx context.Context, req resource.CreateR
 		bodyData.PodSpecOverride = data.PodSpecOverride.ValueString()
 	}
 
-	url := "/api/v2/instance_groups/"
+	url := "instance_groups/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -217,7 +217,7 @@ func (r *InstanceGroupResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/instance_groups/%d/", id)
+	url := fmt.Sprintf("instance_groups/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -293,7 +293,7 @@ func (r *InstanceGroupResource) Update(ctx context.Context, req resource.UpdateR
 		bodyData.PodSpecOverride = data.PodSpecOverride.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/instance_groups/%d/", id)
+	url := fmt.Sprintf("instance_groups/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -321,7 +321,7 @@ func (r *InstanceGroupResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/instance_groups/%d/", id)
+	url := fmt.Sprintf("instance_groups/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

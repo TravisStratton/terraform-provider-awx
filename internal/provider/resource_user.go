@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
@@ -15,6 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 )
 
 var _ resource.Resource = &UserResource{}
@@ -70,7 +72,7 @@ func (r *UserResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"is_system_auditor": schema.BoolAttribute{
 				Optional:    true,
-				Description: "User is a system wide auditor. Only one of `is_superuser` or `is_system_auditor` is allowed.",
+				Description: "AWX/AAP2.4 only. User is a system wide auditor. Only one of `is_superuser` or `is_system_auditor` is allowed. AAP 2.5 changes this attribute to `is_platform_auditor`, but the API to set that to true does not work.",
 				Default:     booldefault.StaticBool(false),
 				Computed:    true,
 			},
@@ -84,6 +86,29 @@ func (r *UserResource) ConfigValidators(ctx context.Context) []resource.ConfigVa
 			path.MatchRoot("is_superuser"),
 			path.MatchRoot("is_system_auditor"),
 		),
+	}
+}
+
+func (r UserResource) ValidateConfig(ctx context.Context, req resource.ValidateConfigRequest, resp *resource.ValidateConfigResponse) {
+	var data UserModel
+
+	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
+
+	// Disallow is_system_auditor for >AAP2.5
+	platform, ok := os.LookupEnv("TOWER_PLATFORM")
+	if !ok {
+		return
+	}
+
+	if platform == "awx" || platform == "aap2.4" || data.IsSystemAuditor == basetypes.NewBoolValue(false) || data.IsSystemAuditor.IsNull() {
+		return
+	} else {
+		resp.Diagnostics.AddAttributeError(
+			path.Root("is_system_auditor"),
+			"Invalid Attribute Configuration",
+			"Attribute is_system_auditor is not supported in this version of the provider.",
+		)
+		return
 	}
 }
 
@@ -129,7 +154,7 @@ func (r *UserResource) Create(ctx context.Context, req resource.CreateRequest, r
 		bodyData.Email = data.Email.ValueString()
 	}
 
-	url := "/api/v2/users/"
+	url := "users/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -159,7 +184,7 @@ func (r *UserResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/users/%d/", id)
+	url := fmt.Sprintf("users/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -250,7 +275,7 @@ func (r *UserResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		bodyData.Email = data.Email.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/users/%d/", id)
+	url := fmt.Sprintf("users/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -277,7 +302,7 @@ func (r *UserResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 			fmt.Sprintf("Unable to convert id: %v.", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/users/%d/", id)
+	url := fmt.Sprintf("users/%d/", id)
 
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {

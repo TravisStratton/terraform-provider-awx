@@ -361,7 +361,7 @@ func (r *ProjectResource) Create(ctx context.Context, req resource.CreateRequest
 		bodyData.ScmUrl = data.ScmUrl.ValueString()
 	}
 
-	url := "/api/v2/projects/"
+	url := "projects/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -403,7 +403,7 @@ func (r *ProjectResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/projects/%d/", id)
+	url := fmt.Sprintf("projects/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -560,7 +560,7 @@ func (r *ProjectResource) Update(ctx context.Context, req resource.UpdateRequest
 		bodyData.ScmUrl = data.ScmUrl.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/projects/%d/", id)
+	url := fmt.Sprintf("projects/%d/", id)
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -601,7 +601,7 @@ func (r *ProjectResource) Delete(ctx context.Context, req resource.DeleteRequest
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/projects/%d/", id)
+	url := fmt.Sprintf("projects/%d/", id)
 	// 403 & 409 return code indicates project is being used by a job or had sync failures.
 	// Newly create projects will be syncing and not able to be deleted immediately.
 	attempts := 30

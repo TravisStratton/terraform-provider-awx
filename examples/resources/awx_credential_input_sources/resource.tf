@@ -20,8 +20,8 @@ resource "awx_credential" "example_hashi_source_cred" {
   inputs = jsonencode({
     "api_version" : "v2",
     "cacert" : "",
-    "client_cert_public" : "",
-    "client_cert_role" : "",
+    "client_cert_public" : "", # not available in AAP 2.4
+    "client_cert_role" : "",   # not available in AAP 2.4
     "default_auth_path" : "approle",
     "kubernetes_role" : "",
     "namespace" : "fake",

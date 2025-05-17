@@ -121,12 +121,12 @@ func (d *InstanceGroupDataSource) Read(ctx context.Context, req datasource.ReadR
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/instance_groups/%d/", id)
+		url = fmt.Sprintf("instance_groups/%d/", id)
 	}
 	if !data.Name.IsNull() {
 		// set url for read by name HTTP request
 		name := urlParser.QueryEscape(data.Name.ValueString())
-		url = fmt.Sprintf("/api/v2/instance_groups/?name=%s", name)
+		url = fmt.Sprintf("instance_groups/?name=%s", name)
 	}
 
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})

@@ -264,12 +264,12 @@ func (d *JobTemplateDataSource) Read(ctx context.Context, req datasource.ReadReq
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/job_templates/%d/", id)
+		url = fmt.Sprintf("job_templates/%d/", id)
 	}
 	if !data.Name.IsNull() {
 		// set url for read by name HTTP request
 		name := urlParser.QueryEscape(data.Name.ValueString())
-		url = fmt.Sprintf("/api/v2/job_templates/?name=%s", name)
+		url = fmt.Sprintf("job_templates/?name=%s", name)
 	}
 
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})

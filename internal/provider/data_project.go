@@ -155,10 +155,10 @@ func (d *ProjectDataSource) Read(ctx context.Context, req datasource.ReadRequest
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/projects/?id=%d", id)
+		url = fmt.Sprintf("projects/?id=%d", id)
 	}
 	if !data.Name.IsNull() {
-		url = fmt.Sprintf("/api/v2/projects/?name=%s", urlParser.QueryEscape(data.Name.ValueString()))
+		url = fmt.Sprintf("projects/?name=%s", urlParser.QueryEscape(data.Name.ValueString()))
 	}
 
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})

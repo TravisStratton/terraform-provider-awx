@@ -196,7 +196,7 @@ func (r *NotificationTemplatesResource) Create(ctx context.Context, req resource
 		bodyData.Messages = messageData
 	}
 
-	url := "/api/v2/notification_templates/"
+	url := "notification_templates/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -237,7 +237,7 @@ func (r *NotificationTemplatesResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/notification_templates/%d/", id)
+	url := fmt.Sprintf("notification_templates/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -612,7 +612,7 @@ func (r *NotificationTemplatesResource) Update(ctx context.Context, req resource
 		bodyData.Messages = messageData
 	}
 
-	url := fmt.Sprintf("/api/v2/notification_templates/%d/", id)
+	url := fmt.Sprintf("notification_templates/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -640,7 +640,7 @@ func (r *NotificationTemplatesResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/notification_templates/%d/", id)
+	url := fmt.Sprintf("notification_templates/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

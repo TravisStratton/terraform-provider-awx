@@ -117,13 +117,13 @@ func (d *CredentialTypeDataSource) Read(ctx context.Context, req datasource.Read
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/credential_types/%d/", id)
+		url = fmt.Sprintf("credential_types/%d/", id)
 	}
 	if !data.Name.IsNull() && !data.Kind.IsNull() {
 		// set url for read by name HTTP request
 		name := urlParser.QueryEscape(data.Name.ValueString())
 		kind := urlParser.QueryEscape(data.Kind.ValueString())
-		url = fmt.Sprintf("/api/v2/credential_types/?name=%s&kind=%s", name, kind)
+		url = fmt.Sprintf("credential_types/?name=%s&kind=%s", name, kind)
 	}
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {

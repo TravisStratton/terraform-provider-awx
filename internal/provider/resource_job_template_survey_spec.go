@@ -184,7 +184,7 @@ func (r *JobTemplateSurveyResource) Create(ctx context.Context, req resource.Cre
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/survey_spec", id)
+	url := fmt.Sprintf("job_templates/%d/survey_spec/", id)
 
 	var bodyData JobTemplateSurvey
 	bodyData.Name = data.Name.ValueString()
@@ -264,7 +264,7 @@ func (r *JobTemplateSurveyResource) Read(ctx context.Context, req resource.ReadR
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/survey_spec", id)
+	url := fmt.Sprintf("job_templates/%d/survey_spec/", id)
 
 	httpResponse, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -394,7 +394,7 @@ func (r *JobTemplateSurveyResource) Update(ctx context.Context, req resource.Upd
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/survey_spec", id)
+	url := fmt.Sprintf("job_templates/%d/survey_spec/", id)
 
 	var bodyData JobTemplateSurvey
 	bodyData.Name = data.Name.ValueString()
@@ -475,7 +475,7 @@ func (r *JobTemplateSurveyResource) Delete(ctx context.Context, req resource.Del
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/survey_spec", id)
+	url := fmt.Sprintf("job_templates/%d/survey_spec/", id)
 
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{200})
 	if err != nil {

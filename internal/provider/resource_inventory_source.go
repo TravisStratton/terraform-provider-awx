@@ -277,7 +277,7 @@ func (r *InventorySourceResource) Create(ctx context.Context, req resource.Creat
 		bodyData.Verbosity = int(data.Verbosity.ValueInt32())
 	}
 
-	url := "/api/v2/inventory_sources/"
+	url := "inventory_sources/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -317,7 +317,7 @@ func (r *InventorySourceResource) Read(ctx context.Context, req resource.ReadReq
 			fmt.Sprintf("Unable to convert id: %v.", data.Id))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/inventory_sources/%d/", id)
+	url := fmt.Sprintf("inventory_sources/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -509,7 +509,7 @@ func (r *InventorySourceResource) Update(ctx context.Context, req resource.Updat
 		bodyData.Verbosity = int(data.Verbosity.ValueInt32())
 	}
 
-	url := fmt.Sprintf("/api/v2/inventory_sources/%d/", id)
+	url := fmt.Sprintf("inventory_sources/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -538,7 +538,7 @@ func (r *InventorySourceResource) Delete(ctx context.Context, req resource.Delet
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/inventory_sources/%d/", id)
+	url := fmt.Sprintf("inventory_sources/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

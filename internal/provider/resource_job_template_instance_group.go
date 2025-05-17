@@ -86,7 +86,7 @@ func (r *JobTemplateInstanceGroupsResource) Create(ctx context.Context, req reso
 			fmt.Sprintf("Unable to convert id: %v. ", data.JobTemplateId.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/instance_groups/", id)
+	url := fmt.Sprintf("job_templates/%d/instance_groups/", id)
 
 	var relatedIds []int
 
@@ -125,7 +125,7 @@ func (r *JobTemplateInstanceGroupsResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/instance_groups/", id)
+	url := fmt.Sprintf("job_templates/%d/instance_groups/", id)
 
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -176,7 +176,7 @@ func (r *JobTemplateInstanceGroupsResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/instance_groups/", id)
+	url := fmt.Sprintf("job_templates/%d/instance_groups/", id)
 
 	body, _, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
@@ -251,7 +251,7 @@ func (r *JobTemplateInstanceGroupsResource) Delete(ctx context.Context, req reso
 			fmt.Sprintf("Unable to convert id: %v. ", data.JobTemplateId.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/instance_groups/", id)
+	url := fmt.Sprintf("job_templates/%d/instance_groups/", id)
 
 	var RelatedIds []int
 

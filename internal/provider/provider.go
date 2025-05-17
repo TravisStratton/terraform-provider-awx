@@ -9,12 +9,14 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -36,6 +38,7 @@ type awxProviderModel struct {
 	Token    types.String `tfsdk:"token"`
 	Username types.String `tfsdk:"username"`
 	Password types.String `tfsdk:"password"`
+	Platform types.String `tfsdk:"platform"`
 }
 
 func (p *awxProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -45,7 +48,7 @@ func (p *awxProvider) Metadata(ctx context.Context, req provider.MetadataRequest
 
 func (p *awxProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "**Warning**: All v0 releases are considered alpha and subject to breaking changes at any time.",
+		Description: "This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				Description: "URL for AWX (i.e. https://tower.example.com)",
@@ -62,6 +65,13 @@ func (p *awxProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 			"password": schema.StringAttribute{
 				Description: "AWX password (instead of token)",
 				Optional:    true,
+			},
+			"platform": schema.StringAttribute{
+				Description: "Does the endpoint point to an Ansible Automation Platform (AAP) version 2.5, verion 2.4, or AWX/Tower environment? Acceptable values are `awx`, `aap2.4`, or `aap2.5`. A default value of `awx` will be assumed if this field is not set. You can also set this using the TOWER_PLATFORM environment variable.",
+				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("aap2.4", "aap2.5", "awx"),
+				},
 			},
 		},
 	}
@@ -86,7 +96,7 @@ func (p *awxProvider) ConfigValidators(ctx context.Context) []provider.ConfigVal
 
 func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	var (
-		token, endpoint, username, password, auth string
+		token, endpoint, username, password, auth, platform string
 	)
 
 	var data awxProviderModel
@@ -111,6 +121,13 @@ func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureReque
 				"configuration block endpoint attribute.",
 		)
 		// Not returning early allows the logic to collect all errors.
+	} else {
+		// strip trailing '/' character from endpoint if present
+		endpointRunes := []rune(endpoint)
+		lastChar := endpointRunes[len(endpointRunes)-1]
+		if lastChar == '/' {
+			endpoint = string(endpointRunes[:len(endpointRunes)-1])
+		}
 	}
 
 	envToken, tokenExists := os.LookupEnv("TOWER_OAUTH_TOKEN")
@@ -164,7 +181,31 @@ func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	client.endpoint = endpoint
 	client.auth = auth
 
-	url := "/api/v2/me/"
+	if !data.Platform.IsNull() {
+		platform = data.Platform.ValueString()
+		os.Setenv("TOWER_PLATFORM", platform)
+	}
+
+	envPlatform, platformExists := os.LookupEnv("TOWER_PLATFORM")
+
+	if platformExists {
+		platform = envPlatform
+	}
+
+	if platform == "" {
+		platform = "awx"
+	}
+
+	client.platform = platform
+
+	if client.platform == "awx" || client.platform == "aap2.4" {
+		client.urlPrefix = "/api/v2/"
+	} else { // aap2.5
+		client.urlPrefix = "/api/controller/v2/"
+	}
+
+	url := "me/"
+
 	_, _, err := client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(

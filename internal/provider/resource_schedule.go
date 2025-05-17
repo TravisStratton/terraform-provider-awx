@@ -104,7 +104,7 @@ func (r *ScheduleResource) Create(ctx context.Context, req resource.CreateReques
 		bodyData.Description = data.Description.ValueString()
 	}
 
-	url := "/api/v2/schedules/"
+	url := "schedules/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -144,7 +144,7 @@ func (r *ScheduleResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/schedules/%d/", id)
+	url := fmt.Sprintf("schedules/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -208,7 +208,7 @@ func (r *ScheduleResource) Update(ctx context.Context, req resource.UpdateReques
 		bodyData.Description = data.Description.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/schedules/%d/", id)
+	url := fmt.Sprintf("schedules/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -236,7 +236,7 @@ func (r *ScheduleResource) Delete(ctx context.Context, req resource.DeleteReques
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/schedules/%d/", id)
+	url := fmt.Sprintf("schedules/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

@@ -36,7 +36,7 @@ resource "awx_user" "example" {
 - `email` (String) User's email.
 - `first_name` (String) User's first name.
 - `is_superuser` (Boolean) Designates that this user has all permissions without explicitly assigning them. Only one of `is_superuser` or `is_system_auditor` is allowed.
-- `is_system_auditor` (Boolean) User is a system wide auditor. Only one of `is_superuser` or `is_system_auditor` is allowed.
+- `is_system_auditor` (Boolean) AWX/AAP2.4 only. User is a system wide auditor. Only one of `is_superuser` or `is_system_auditor` is allowed. AAP 2.5 changes this attribute to `is_platform_auditor`, but the API to set that to true does not work.
 - `last_name` (String) User's last name.
 
 ### Read-Only

@@ -118,7 +118,7 @@ func (r *ExecutionEnvironmentResource) Create(ctx context.Context, req resource.
 		bodyData.Credential = int(data.Credential.ValueInt32())
 	}
 
-	url := "/api/v2/execution_environments/"
+	url := "execution_environments/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -158,7 +158,7 @@ func (r *ExecutionEnvironmentResource) Read(ctx context.Context, req resource.Re
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/execution_environments/%d/", id)
+	url := fmt.Sprintf("execution_environments/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -248,7 +248,7 @@ func (r *ExecutionEnvironmentResource) Update(ctx context.Context, req resource.
 		bodyData.Credential = int(data.Credential.ValueInt32())
 	}
 
-	url := fmt.Sprintf("/api/v2/execution_environments/%d/", id)
+	url := fmt.Sprintf("execution_environments/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -276,7 +276,7 @@ func (r *ExecutionEnvironmentResource) Delete(ctx context.Context, req resource.
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/execution_environments/%d/", id)
+	url := fmt.Sprintf("execution_environments/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

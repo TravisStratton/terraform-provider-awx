@@ -108,7 +108,7 @@ func (d *CredentialDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		return
 	}
 
-	url = fmt.Sprintf("/api/v2/credentials/%d/", id)
+	url = fmt.Sprintf("credentials/%d/", id)
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(

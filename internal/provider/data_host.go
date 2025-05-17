@@ -112,12 +112,12 @@ func (d *HostDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/hosts/%d/", id)
+		url = fmt.Sprintf("hosts/%d/", id)
 	}
 	if !data.Name.IsNull() && !data.Inventory.IsNull() {
 		// set url for read by name HTTP request
 		name := urlParser.QueryEscape(data.Name.ValueString())
-		url = fmt.Sprintf("/api/v2/hosts/?name=%s&inventory=%d", name, data.Inventory.ValueInt32())
+		url = fmt.Sprintf("hosts/?name=%s&inventory=%d", name, data.Inventory.ValueInt32())
 	}
 
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})

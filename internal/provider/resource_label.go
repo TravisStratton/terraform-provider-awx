@@ -87,7 +87,7 @@ func (r *LabelsResource) Create(ctx context.Context, req resource.CreateRequest,
 	bodyData.Name = data.Name.ValueString()
 	bodyData.Organization = int(data.Organization.ValueInt32())
 
-	url := "/api/v2/labels/"
+	url := "labels/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -127,7 +127,7 @@ func (r *LabelsResource) Read(ctx context.Context, req resource.ReadRequest, res
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/labels/%d/", id)
+	url := fmt.Sprintf("labels/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -188,7 +188,7 @@ func (r *LabelsResource) Update(ctx context.Context, req resource.UpdateRequest,
 	bodyData.Name = data.Name.ValueString()
 	bodyData.Organization = int(data.Organization.ValueInt32())
 
-	url := fmt.Sprintf("/api/v2/labels/%d/", id)
+	url := fmt.Sprintf("labels/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(

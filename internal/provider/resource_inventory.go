@@ -132,7 +132,7 @@ func (r *InventoryResource) Create(ctx context.Context, req resource.CreateReque
 		bodyData.HostFilter = data.HostFilter.ValueString()
 	}
 
-	url := "/api/v2/inventories/"
+	url := "inventories/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -172,7 +172,7 @@ func (r *InventoryResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/inventories/%d/", id)
+	url := fmt.Sprintf("inventories/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -276,7 +276,7 @@ func (r *InventoryResource) Update(ctx context.Context, req resource.UpdateReque
 		bodyData.HostFilter = data.HostFilter.ValueString()
 	}
 
-	url := fmt.Sprintf("/api/v2/inventories/%d/", id)
+	url := fmt.Sprintf("inventories/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -304,7 +304,7 @@ func (r *InventoryResource) Delete(ctx context.Context, req resource.DeleteReque
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/inventories/%d/", id)
+	url := fmt.Sprintf("inventories/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

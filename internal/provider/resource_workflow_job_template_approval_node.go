@@ -118,7 +118,7 @@ func (r *WorkflowJobTemplateApprovalNode) Create(ctx context.Context, req resour
 	/////////////////////////////////////////////////////
 	// First create an empty node
 
-	url := fmt.Sprintf("/api/v2/workflow_job_templates/%d/workflow_nodes/", data.WorkflowJobTemplateId.ValueInt32())
+	url := fmt.Sprintf("workflow_job_templates/%d/workflow_nodes/", data.WorkflowJobTemplateId.ValueInt32())
 
 	newJTworkflowNode := struct {
 		NodeType string `json:"node_type"`
@@ -169,7 +169,7 @@ func (r *WorkflowJobTemplateApprovalNode) Create(ctx context.Context, req resour
 		return
 	}
 
-	url = fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/create_approval_template/", tempIdInt)
+	url = fmt.Sprintf("workflow_job_template_nodes/%d/create_approval_template/", tempIdInt)
 
 	returnedData, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
@@ -221,7 +221,7 @@ func (r *WorkflowJobTemplateApprovalNode) Read(ctx context.Context, req resource
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/", id)
 
 	responseBody, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -260,7 +260,7 @@ func (r *WorkflowJobTemplateApprovalNode) Read(ctx context.Context, req resource
 
 	/// now read the node's template's data
 
-	url = fmt.Sprintf("/api/v2/workflow_approval_templates/%d/", getNameFromResponse.ApprovalTemplateId)
+	url = fmt.Sprintf("workflow_approval_templates/%d/", getNameFromResponse.ApprovalTemplateId)
 
 	responseBody, statusCode, err = r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -335,7 +335,7 @@ func (r *WorkflowJobTemplateApprovalNode) Update(ctx context.Context, req resour
 	bodyData.Description = data.Description.ValueString()
 	bodyData.Timeout = int(data.Timeout.ValueInt32())
 
-	url := fmt.Sprintf("/api/v2/workflow_approval_templates/%d/", data.ApprovalTemplateId.ValueInt32())
+	url := fmt.Sprintf("workflow_approval_templates/%d/", data.ApprovalTemplateId.ValueInt32())
 
 	_, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPatch, url, bodyData, []int{200})
 	if err != nil {
@@ -363,7 +363,7 @@ func (r *WorkflowJobTemplateApprovalNode) Delete(ctx context.Context, req resour
 			"Unable convert id from string to int",
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/", id)
 
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{204})
 	if err != nil {

@@ -497,7 +497,7 @@ func (r *JobTemplateResource) Create(ctx context.Context, req resource.CreateReq
 		bodyData.PreventInstanceGroupFallback = data.PreventInstanceGroupFallback.ValueBool()
 	}
 
-	url := "/api/v2/job_templates/"
+	url := "job_templates/"
 	returnedData, statusCode, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{200, 201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -543,7 +543,7 @@ func (r *JobTemplateResource) Read(ctx context.Context, req resource.ReadRequest
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/", id)
+	url := fmt.Sprintf("job_templates/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -891,7 +891,7 @@ func (r *JobTemplateResource) Update(ctx context.Context, req resource.UpdateReq
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/job_templates/%d/", id)
+	url := fmt.Sprintf("job_templates/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPut, url, bodyData, []int{200})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -918,7 +918,7 @@ func (r *JobTemplateResource) Delete(ctx context.Context, req resource.DeleteReq
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/job_templates/%d/", id)
+	url := fmt.Sprintf("job_templates/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(

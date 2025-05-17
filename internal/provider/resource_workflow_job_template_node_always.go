@@ -87,7 +87,7 @@ func (r *WorkflowJobTemplatesNodeAlwaysResource) Create(ctx context.Context, req
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/always_nodes/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/always_nodes/", id)
 
 	var relatedIds []int
 
@@ -129,7 +129,7 @@ func (r *WorkflowJobTemplatesNodeAlwaysResource) Read(ctx context.Context, req r
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/always_nodes/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/always_nodes/", id)
 
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -184,7 +184,7 @@ func (r *WorkflowJobTemplatesNodeAlwaysResource) Update(ctx context.Context, req
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/always_nodes/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/always_nodes/", id)
 
 	body, _, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
@@ -264,7 +264,7 @@ func (r *WorkflowJobTemplatesNodeAlwaysResource) Delete(ctx context.Context, req
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/always_nodes/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/always_nodes/", id)
 
 	var RelatedIds []int
 

@@ -116,12 +116,12 @@ func (d *UserDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 				fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 			return
 		}
-		url = fmt.Sprintf("/api/v2/users/%d/", id)
+		url = fmt.Sprintf("users/%d/", id)
 	}
 	if !data.Username.IsNull() {
 		// set url for read by username HTTP request
 		name := urlParser.QueryEscape(data.Username.ValueString())
-		url = fmt.Sprintf("/api/v2/users/?username=%s", name)
+		url = fmt.Sprintf("users/?username=%s", name)
 	}
 
 	body, statusCode, err := d.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})

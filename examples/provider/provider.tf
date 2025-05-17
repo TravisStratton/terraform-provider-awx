@@ -16,3 +16,10 @@ provider "awx" {
   username = "admin"
   password = "password"
 }
+
+
+provider "awx" {
+  endpoint = "http://aap.example.com"
+  token    = "mysecrettoken"
+  platform = "aap2.5"
+}

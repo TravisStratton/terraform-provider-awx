@@ -11,15 +11,18 @@ import (
 )
 
 type AwxClient struct {
-	client   *http.Client
-	endpoint string
-	auth     string
+	client    *http.Client
+	endpoint  string
+	auth      string
+	platform  string
+	urlPrefix string
 }
 
 // A wrapper for http.NewRequestWithContext() that prepends tower endpoint to URL & sets authorization
 // headers and then makes the actual http request.
 func (c *AwxClient) GenericAPIRequest(ctx context.Context, method, url string, requestBody any, successCodes []int) (responseBody []byte, statusCode int, errorMessage error) {
-	url = c.endpoint + url
+
+	url = c.buildAPIUrl(url)
 
 	var body io.Reader
 
@@ -72,7 +75,8 @@ func (c *AwxClient) GenericAPIRequest(ctx context.Context, method, url string, r
 }
 
 func (c *AwxClient) CreateUpdateAPIRequest(ctx context.Context, method, url string, requestBody any, successCodes []int) (returnedData map[string]any, statusCode int, errorMessage error) {
-	url = c.endpoint + url
+
+	url = c.buildAPIUrl(url)
 
 	var body io.Reader
 
@@ -129,5 +133,26 @@ func (c *AwxClient) CreateUpdateAPIRequest(ctx context.Context, method, url stri
 		errorMessage = errors.New("unable to unmarshal http request response body to retrieve returnedData")
 		return
 	}
+	return
+}
+
+func (c *AwxClient) buildAPIUrl(resourceUrl string) (url string) {
+
+	// in AAP, most api endpoint live in /controller/
+	//   But, for the few exceptions, in list below, override to /gateway/v1/
+
+	aap_gateway_override_list := []string{"organizations", "users"}
+
+	if c.platform != "awx" && c.platform != "aap2.4" {
+		for _, v := range aap_gateway_override_list {
+			if strings.HasPrefix(resourceUrl, v) {
+				url = c.endpoint + "/api/gateway/v1/" + resourceUrl
+				return
+			}
+		}
+	}
+
+	url = c.endpoint + c.urlPrefix + resourceUrl
+
 	return
 }

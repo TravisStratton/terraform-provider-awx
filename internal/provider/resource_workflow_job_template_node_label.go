@@ -87,7 +87,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Create(ctx context.Context, req 
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/labels/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/labels/", id)
 
 	var relatedIds []int
 
@@ -127,7 +127,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Read(ctx context.Context, req re
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 		return
 	}
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/labels", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/labels/", id)
 
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
@@ -182,7 +182,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Update(ctx context.Context, req 
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/labels/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/labels/", id)
 
 	responseBody, _, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200})
 	if err != nil {
@@ -261,7 +261,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Delete(ctx context.Context, req 
 			fmt.Sprintf("Unable to convert id: %v. ", data.Id.ValueString()))
 	}
 
-	url := fmt.Sprintf("/api/v2/workflow_job_template_nodes/%d/labels/", id)
+	url := fmt.Sprintf("workflow_job_template_nodes/%d/labels/", id)
 
 	var RelatedIds []int
 

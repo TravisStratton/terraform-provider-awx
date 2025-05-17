@@ -111,7 +111,7 @@ func (r *CredentialInputSourcesResource) Create(ctx context.Context, req resourc
 
 	bodyData.Metadata = metadataMap
 
-	url := "/api/v2/credential_input_sources/"
+	url := "credential_input_sources/"
 	returnedData, _, err := r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -151,7 +151,7 @@ func (r *CredentialInputSourcesResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_input_sources/%d/", id)
+	url := fmt.Sprintf("credential_input_sources/%d/", id)
 	body, statusCode, err := r.client.GenericAPIRequest(ctx, http.MethodGet, url, nil, []int{200, 404})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -225,7 +225,7 @@ func (r *CredentialInputSourcesResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_input_sources/%d/", id)
+	url := fmt.Sprintf("credential_input_sources/%d/", id)
 	_, _, err = r.client.CreateUpdateAPIRequest(ctx, http.MethodPost, url, bodyData, []int{201})
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -254,7 +254,7 @@ func (r *CredentialInputSourcesResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	url := fmt.Sprintf("/api/v2/credential_input_sources/%d/", id)
+	url := fmt.Sprintf("credential_input_sources/%d/", id)
 	_, _, err = r.client.GenericAPIRequest(ctx, http.MethodDelete, url, nil, []int{202, 204})
 	if err != nil {
 		resp.Diagnostics.AddError(
