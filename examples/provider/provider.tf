@@ -23,3 +23,13 @@ provider "awx" {
   token    = "mysecrettoken"
   platform = "aap2.5"
 }
+
+provider "awx" {
+  endpoint = "http://aap.example.com"
+  token    = "mysecrettoken"
+  platform = "aap2.5"
+  api_retry = {
+    api_retry_count         = 1
+    api_retry_delay_seconds = 2
+  }
+}

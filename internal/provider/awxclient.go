@@ -8,14 +8,17 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type AwxClient struct {
-	client    *http.Client
-	endpoint  string
-	auth      string
-	platform  string
-	urlPrefix string
+	client               *http.Client
+	endpoint             string
+	auth                 string
+	platform             string
+	urlPrefix            string
+	apiRetryCount        int32
+	apiRetryDelaySeconds int32
 }
 
 // A wrapper for http.NewRequestWithContext() that prepends tower endpoint to URL & sets authorization
@@ -44,17 +47,39 @@ func (c *AwxClient) GenericAPIRequest(ctx context.Context, method, url string, r
 	httpReq.Header.Add("Content-Type", "application/json")
 	httpReq.Header.Add("Authorization", c.auth)
 
-	httpResp, err := c.client.Do(httpReq)
-	if err != nil {
-		errorMessage = fmt.Errorf("error doing http request: %v", err)
-		return
+	var success bool
+	var httpResp *http.Response
+	var maxAttempts int
+
+	if method == http.MethodGet {
+		maxAttempts = 1 + int(c.apiRetryCount)
+	} else {
+		maxAttempts = 1
 	}
 
-	var success bool
-	for _, successCode := range successCodes {
-		if httpResp.StatusCode == successCode {
-			success = true
+	for i := 0; i < maxAttempts; i++ {
+		httpResp, err = c.client.Do(httpReq)
+		if err != nil {
+			errorMessage = fmt.Errorf("error doing http request: %v", err)
+			return
 		}
+
+		for _, successCode := range successCodes {
+			if httpResp.StatusCode == successCode {
+				success = true
+				break
+			}
+		}
+
+		if success {
+			break
+		}
+
+		// if not success & have remaining attempts
+		if !success && ((maxAttempts - i) > 1) {
+			SleepWithContext(ctx, time.Duration(c.apiRetryDelaySeconds)*time.Second)
+		}
+
 	}
 
 	responseBody, err = io.ReadAll(httpResp.Body)
@@ -72,6 +97,17 @@ func (c *AwxClient) GenericAPIRequest(ctx context.Context, method, url string, r
 	}
 
 	return
+}
+
+func SleepWithContext(ctx context.Context, d time.Duration) {
+	timer := time.NewTimer(d)
+	select {
+	case <-ctx.Done():
+		if !timer.Stop() {
+			<-timer.C
+		}
+	case <-timer.C:
+	}
 }
 
 func (c *AwxClient) CreateUpdateAPIRequest(ctx context.Context, method, url string, requestBody any, successCodes []int, aap25_api_endpoint_hint string) (returnedData map[string]any, statusCode int, errorMessage error) {
@@ -98,17 +134,38 @@ func (c *AwxClient) CreateUpdateAPIRequest(ctx context.Context, method, url stri
 	httpReq.Header.Add("Content-Type", "application/json")
 	httpReq.Header.Add("Authorization", c.auth)
 
-	httpResp, err := c.client.Do(httpReq)
-	if err != nil {
-		errorMessage = fmt.Errorf("error doing http request: %v", err)
-		return
+	var success bool
+	var httpResp *http.Response
+	var maxAttempts int
+
+	if method == http.MethodGet {
+		maxAttempts = 1 + int(c.apiRetryCount)
+	} else {
+		maxAttempts = 1
 	}
 
-	var success bool
-	for _, successCode := range successCodes {
-		if httpResp.StatusCode == successCode {
-			success = true
+	for i := 0; i < maxAttempts; i++ {
+		httpResp, err = c.client.Do(httpReq)
+		if err != nil {
+			errorMessage = fmt.Errorf("error doing http request: %v", err)
+			return
 		}
+
+		for _, successCode := range successCodes {
+			if httpResp.StatusCode == successCode {
+				success = true
+				break
+			}
+		}
+		if success {
+			break
+		}
+
+		// if not success & have remaining attempts
+		if !success && ((maxAttempts - i) > 1) {
+			SleepWithContext(ctx, time.Duration(c.apiRetryDelaySeconds)*time.Second)
+		}
+
 	}
 
 	if !success {
