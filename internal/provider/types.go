@@ -117,6 +117,22 @@ type HostAPIModel struct {
 	Variables   string `json:"variables,omitempty"`
 }
 
+type GroupModel struct {
+	Id          types.String `tfsdk:"id"`
+	Name        types.String `tfsdk:"name"`
+	Description types.String `tfsdk:"description"`
+	Inventory   types.Int32  `tfsdk:"inventory"`
+	Variables   types.String `tfsdk:"variables"`
+}
+
+type GroupAPIModel struct {
+	Id          int    `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+	Inventory   int    `json:"inventory"`
+	Variables   string `json:"variables,omitempty"`
+}
+
 type InstanceGroupModel struct {
 	Id                       types.String `tfsdk:"id"`
 	Name                     types.String `tfsdk:"name"`

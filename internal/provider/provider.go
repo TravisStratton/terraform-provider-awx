@@ -266,6 +266,7 @@ func (p *awxProvider) Resources(ctx context.Context) []func() resource.Resource 
 		NewCredentialInputSourcesResource,
 		NewCredentialTypeResource,
 		NewHostResource,
+		NewGroupResource,
 		NewInstanceGroupResource,
 		NewInventoryResource,
 		NewInventorySourceResource,
