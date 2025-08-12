@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -37,36 +38,36 @@ func TestAccJobTemplateResource(t *testing.T) {
 				Config: testAccJobTemplateResourceConfig(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("job_type"),
 						knownvalue.StringExact(resource1.JobType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("playbook"),
 						knownvalue.StringExact(resource1.Playbook),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("project"),
 						IdCompare,
 					),
@@ -81,36 +82,36 @@ func TestAccJobTemplateResource(t *testing.T) {
 				Config: testAccJobTemplateResourceConfig(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("job_type"),
 						knownvalue.StringExact(resource2.JobType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("playbook"),
 						knownvalue.StringExact(resource2.Playbook),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("project"),
 						IdCompare,
 					),
@@ -121,7 +122,7 @@ func TestAccJobTemplateResource(t *testing.T) {
 }
 
 func testAccJobTemplateResourceConfig(resource JobTemplateAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -147,5 +148,5 @@ resource "awx_job_template" "test" {
   project     = awx_project.test.id
   playbook    = "%s"
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook))
 }

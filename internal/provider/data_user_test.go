@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -43,32 +44,32 @@ func TestAccUserDataSource(t *testing.T) {
 					Config: testAccUserDataSourceIdConfig(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("username"),
 							knownvalue.StringExact(resource1.Username),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("first_name"),
 							knownvalue.StringExact(resource1.FirstName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("last_name"),
 							knownvalue.StringExact(resource1.LastName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("email"),
 							knownvalue.StringExact(resource1.Email),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("is_superuser"),
 							knownvalue.Bool(resource1.IsSuperuser),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("is_system_auditor"),
 							knownvalue.Bool(false),
 						),
@@ -79,32 +80,32 @@ func TestAccUserDataSource(t *testing.T) {
 					Config: testAccUserDataSourceNameConfig(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("username"),
 							knownvalue.StringExact(resource2.Username),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("first_name"),
 							knownvalue.StringExact(resource2.FirstName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("last_name"),
 							knownvalue.StringExact(resource2.LastName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("email"),
 							knownvalue.StringExact(resource2.Email),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("is_superuser"),
 							knownvalue.Bool(false),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("is_system_auditor"),
 							knownvalue.Bool(resource2.IsSystemAuditor),
 						),
@@ -140,27 +141,27 @@ func TestAccUserDataSource(t *testing.T) {
 					Config: testAccUserDataSourceIdConfig(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("username"),
 							knownvalue.StringExact(resource1.Username),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("first_name"),
 							knownvalue.StringExact(resource1.FirstName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("last_name"),
 							knownvalue.StringExact(resource1.LastName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("email"),
 							knownvalue.StringExact(resource1.Email),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-id",
+							fmt.Sprintf("data.%s_user.test-id", configprefix.Prefix),
 							tfjsonpath.New("is_superuser"),
 							knownvalue.Bool(resource1.IsSuperuser),
 						),
@@ -171,27 +172,27 @@ func TestAccUserDataSource(t *testing.T) {
 					Config: testAccUserDataSourceNameConfig(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("username"),
 							knownvalue.StringExact(resource2.Username),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("first_name"),
 							knownvalue.StringExact(resource2.FirstName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("last_name"),
 							knownvalue.StringExact(resource2.LastName),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("email"),
 							knownvalue.StringExact(resource2.Email),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_user.test-name",
+							fmt.Sprintf("data.%s_user.test-name", configprefix.Prefix),
 							tfjsonpath.New("is_superuser"),
 							knownvalue.Bool(false),
 						),
@@ -203,7 +204,7 @@ func TestAccUserDataSource(t *testing.T) {
 }
 
 func testAccUserDataSourceIdConfig(resource UserAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_user" "test-id" {
   username      = "%s"
   first_name 	= "%s"
@@ -215,11 +216,11 @@ resource "awx_user" "test-id" {
 data "awx_user" "test-id" {
   id = awx_user.test-id.id
 }
-`, resource.Username, resource.FirstName, resource.LastName, resource.Email, resource.Password, resource.IsSuperuser)
+`, resource.Username, resource.FirstName, resource.LastName, resource.Email, resource.Password, resource.IsSuperuser))
 }
 
 func testAccUserDataSourceNameConfig(resource UserAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_user" "test-name" {
   username      	= "%s"
   first_name 		= "%s"
@@ -231,5 +232,5 @@ resource "awx_user" "test-name" {
 data "awx_user" "test-name" {
   username = awx_user.test-name.username
 }
-`, resource.Username, resource.FirstName, resource.LastName, resource.Email, resource.Password, resource.IsSystemAuditor)
+`, resource.Username, resource.FirstName, resource.LastName, resource.Email, resource.Password, resource.IsSystemAuditor))
 }

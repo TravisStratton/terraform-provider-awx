@@ -1,0 +1,54 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_inventory" "example" {
+  name         = "example"
+  description  = "example"
+  organization = {{.Prefix}}_organization.example.id
+}
+
+resource "{{.Prefix}}_group" "group-example" {
+  name        = "group-name-example"
+  description = "Example with jsonencoded variables."
+  inventory   = {{.Prefix}}_inventory.example.id
+  variables = jsonencode(
+    {
+      foo = "bar"
+      baz = "qux"
+    }
+  )
+}
+
+resource "{{.Prefix}}_host" "host-1" {
+  name      = "host-1"
+  inventory = {{.Prefix}}_inventory.example.id
+}
+
+
+resource "{{.Prefix}}_host" "host-2" {
+  name      = "host-2"
+  inventory = {{.Prefix}}_inventory.example.id
+}
+
+resource "{{.Prefix}}_group_host" "grp-host-link" {
+  group_id = {{.Prefix}}_group.group-example.id
+  host_id  = {{.Prefix}}_host.host-1.id
+}
+
+resource "{{.Prefix}}_group_host" "grp-host-link-2" {
+  group_id = {{.Prefix}}_group.group-example.id
+  host_id  = {{.Prefix}}_host.host-2.id
+}
+
+resource "{{.Prefix}}_group" "group-example-2" {
+  name        = "group-name-example-2"
+  description = "A second group example."
+  inventory   = {{.Prefix}}_inventory.example.id
+}
+
+resource "{{.Prefix}}_group_host" "grp2-host-link" {
+  group_id = {{.Prefix}}_group.group-example-2.id
+  host_id  = {{.Prefix}}_host.host-2.id
+}

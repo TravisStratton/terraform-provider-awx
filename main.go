@@ -1,3 +1,5 @@
+// SPECIAL: Hardcoded provider prefix required in this file
+
 package main
 
 import (

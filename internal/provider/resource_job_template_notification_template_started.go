@@ -22,7 +22,7 @@ func NewJobTemplateNotifTemplStartedResource() resource.Resource {
 }
 
 type JobTemplateNotifTemplStartedResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type JobTemplateNotifTemplStartedResourceModel struct {
@@ -36,7 +36,7 @@ func (r *JobTemplateNotifTemplStartedResource) Metadata(ctx context.Context, req
 
 func (r *JobTemplateNotifTemplStartedResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Associate awx_notification_template(s) to a job template.",
+		Description: "Associate notification template(s) to a job template.",
 		Attributes: map[string]schema.Attribute{
 			"job_template_id": schema.StringAttribute{
 				Required:    true,
@@ -44,7 +44,7 @@ func (r *JobTemplateNotifTemplStartedResource) Schema(ctx context.Context, req r
 			},
 			"notif_template_ids": schema.SetAttribute{
 				Required:    true,
-				Description: "An unordered list of `awx_notification_template` IDs associated to a particular Job Template.",
+				Description: "An unordered list of `Automation Controller_notification_template` IDs associated to a particular Job Template.",
 				ElementType: types.Int32Type,
 			},
 		},
@@ -56,7 +56,7 @@ func (r *JobTemplateNotifTemplStartedResource) Configure(ctx context.Context, re
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

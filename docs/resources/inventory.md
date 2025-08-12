@@ -3,12 +3,12 @@
 page_title: "awx_inventory Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX inventory.
+  Manage an Automation Controller inventory.
 ---
 
 # awx_inventory (Resource)
 
-Manage an AWX inventory.
+Manage an Automation Controller inventory.
 
 ## Example Usage
 

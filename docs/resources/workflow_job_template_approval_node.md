@@ -27,7 +27,7 @@ resource "awx_workflow_job_template_approval_node" "example_node" {
 ### Required
 
 - `name` (String) The name of this template.
-- `workflow_job_template_id` (Number) This the ID for the `awx_workflow_job_template` for which this approval node/template should be embedded.
+- `workflow_job_template_id` (Number) This the ID for the `Automation Controller_workflow_job_template` for which this approval node/template should be embedded.
 
 ### Optional
 

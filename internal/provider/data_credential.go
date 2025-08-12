@@ -19,7 +19,7 @@ func NewCredentialDataSource() datasource.DataSource {
 }
 
 type CredentialDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *CredentialDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -75,7 +75,7 @@ func (d *CredentialDataSource) Configure(ctx context.Context, req datasource.Con
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

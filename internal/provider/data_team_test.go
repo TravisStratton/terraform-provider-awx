@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -30,19 +31,19 @@ func TestAccTeamDataSource(t *testing.T) {
 				Config: testAccTeamDataSourceIdConfig(teamName, teamDesc, orgName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_team.test-id",
+						fmt.Sprintf("data.%s_team.test-id", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(teamName),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_team.test-id",
+						fmt.Sprintf("data.%s_team.test-id", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(teamDesc),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("aap25_gateway_id"),
-						"data.awx_team.test-id",
+						fmt.Sprintf("data.%s_team.test-id", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -53,19 +54,19 @@ func TestAccTeamDataSource(t *testing.T) {
 				Config: testAccTeamDataSourceNameConfig(teamName, teamDesc, orgName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_team.test-name",
+						fmt.Sprintf("data.%s_team.test-name", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(teamName),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_team.test-name",
+						fmt.Sprintf("data.%s_team.test-name", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(teamDesc),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("aap25_gateway_id"),
-						"data.awx_team.test-name",
+						fmt.Sprintf("data.%s_team.test-name", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -76,7 +77,7 @@ func TestAccTeamDataSource(t *testing.T) {
 }
 
 func testAccTeamDataSourceIdConfig(teamName, teamDesc, orgName string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name = "%s"
 }
@@ -90,11 +91,11 @@ resource "awx_team" "test" {
 data "awx_team" "test-id" {
   id = awx_team.test.id
 }
-`, orgName, teamName, teamDesc)
+`, orgName, teamName, teamDesc))
 }
 
 func testAccTeamDataSourceNameConfig(teamName, teamDesc, orgName string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name = "%s"
 }
@@ -108,5 +109,5 @@ resource "awx_team" "test" {
 data "awx_team" "test-name" {
   name = awx_team.test.name
 }
-`, orgName, teamName, teamDesc)
+`, orgName, teamName, teamDesc))
 }

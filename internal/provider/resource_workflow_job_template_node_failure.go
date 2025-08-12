@@ -22,7 +22,7 @@ func NewWorkflowJobTemplatesNodeFailureResource() resource.Resource {
 }
 
 type WorkflowJobTemplatesNodeFailureResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type WorkflowJobTemplatesNodeFailureResourceModel struct {
@@ -57,7 +57,7 @@ func (r *WorkflowJobTemplatesNodeFailureResource) Configure(ctx context.Context,
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

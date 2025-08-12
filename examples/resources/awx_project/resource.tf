@@ -28,7 +28,7 @@ resource "awx_project" "example-manual" {
   name         = "example_manual"
   organization = awx_organization.example.id
   scm_type     = "manual"
-  local_path   = "directory/on/awx"
+  local_path   = "directory/on/controller"
 }
 
 data "awx_credential" "example-insights" {

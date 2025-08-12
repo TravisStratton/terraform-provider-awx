@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -32,27 +33,27 @@ func TestAccScheduleDataSource(t *testing.T) {
 				Config: testAccScheduleDataSourceConfig(schedule),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_schedule.test",
+						fmt.Sprintf("data.%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(schedule.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_schedule.test",
+						fmt.Sprintf("data.%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(schedule.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_schedule.test",
+						fmt.Sprintf("data.%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("rrule"),
 						knownvalue.StringExact(schedule.Rrule),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_schedule.test",
+						fmt.Sprintf("data.%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("unified_job_template"),
 						knownvalue.Int32Exact(int32(schedule.UnifiedJobTemplate)),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_schedule.test",
+						fmt.Sprintf("data.%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(schedule.Enabled),
 					),
@@ -63,7 +64,7 @@ func TestAccScheduleDataSource(t *testing.T) {
 }
 
 func testAccScheduleDataSourceConfig(resource ScheduleAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_schedule" "test" {
   name        			= "%s"
   description 			= "%s"
@@ -74,5 +75,5 @@ resource "awx_schedule" "test" {
 data "awx_schedule" "test" {
   id = awx_schedule.test.id
 }
-`, resource.Name, resource.Description, resource.Rrule, resource.UnifiedJobTemplate, resource.Enabled)
+`, resource.Name, resource.Description, resource.Rrule, resource.UnifiedJobTemplate, resource.Enabled))
 }

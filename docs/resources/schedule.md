@@ -3,12 +3,12 @@
 page_title: "awx_schedule Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX schedule.
+  Manage an Automation Controller schedule.
 ---
 
 # awx_schedule (Resource)
 
-Manage an AWX schedule.
+Manage an Automation Controller schedule.
 
 ## Example Usage
 

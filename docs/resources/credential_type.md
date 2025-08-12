@@ -3,12 +3,12 @@
 page_title: "awx_credential_type Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX credential type.
+  Manage an Automation Controller credential type.
 ---
 
 # awx_credential_type (Resource)
 
-Manage an AWX credential type.
+Manage an Automation Controller credential type.
 
 ## Example Usage
 

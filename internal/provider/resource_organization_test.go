@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -38,22 +39,22 @@ func TestAccOrganizationResource(t *testing.T) {
 					Config: testAccOrganizationResourceConfig1(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource1.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource1.Description),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("default_environment"),
 							knownvalue.Int32Exact(int32(resource1.DefaultEnv)),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("max_hosts"),
 							knownvalue.Int32Exact(int32(resource1.MaxHosts)),
 						),
@@ -70,22 +71,22 @@ func TestAccOrganizationResource(t *testing.T) {
 					Config: testAccOrganizationResourceConfig1(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource2.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource2.Description),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("default_environment"),
 							knownvalue.Int32Exact(int32(resource2.DefaultEnv)),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("max_hosts"),
 							knownvalue.Int32Exact(int32(resource2.MaxHosts)),
 						),
@@ -113,12 +114,12 @@ func TestAccOrganizationResource(t *testing.T) {
 					Config: testAccOrganizationResourceConfig2(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource1.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource1.Description),
 						),
@@ -135,12 +136,12 @@ func TestAccOrganizationResource(t *testing.T) {
 					Config: testAccOrganizationResourceConfig2(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource2.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"awx_organization.test",
+							fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource2.Description),
 						),
@@ -152,21 +153,21 @@ func TestAccOrganizationResource(t *testing.T) {
 }
 
 func testAccOrganizationResourceConfig1(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        			= "%s"
   description 			= "%s"
   default_environment 	= %d
   max_hosts				= %d
 }
-  `, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts)
+  `, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts))
 }
 
 func testAccOrganizationResourceConfig2(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        			= "%s"
   description 			= "%s"
 }
-  `, resource.Name, resource.Description)
+  `, resource.Name, resource.Description))
 }

@@ -25,7 +25,7 @@ func NewExecutionEnvironmentResource() resource.Resource {
 }
 
 type ExecutionEnvironmentResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *ExecutionEnvironmentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -34,7 +34,7 @@ func (r *ExecutionEnvironmentResource) Metadata(ctx context.Context, req resourc
 
 func (r *ExecutionEnvironmentResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX Execution Environment.`,
+		Description: `Manage an Automation Controller Execution Environment.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Execution Environment ID.",
@@ -79,7 +79,7 @@ func (r *ExecutionEnvironmentResource) Configure(ctx context.Context, req resour
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

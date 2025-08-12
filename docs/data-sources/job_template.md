@@ -50,7 +50,7 @@ data "awx_job_template" "example-name" {
 - `ask_variables_on_launch` (Boolean) Prompt user for variables on launch.
 - `ask_verbosity_on_launch` (Boolean) Prompt user for verbosity on launch.
 - `become_enabled` (Boolean) If enabled, run this playbook as an administrator.
-- `custom_virtualenv` (String) Local absolute file path containing a custom Python virtualenv to use. Only compatible with older versions of AWX/Tower. Deprecated, will be removed in the future
+- `custom_virtualenv` (String) Local absolute file path containing a custom Python virtualenv to use. Only compatible with older versions of Tower. Deprecated, will be removed in the future
 - `description` (String) Job template description.
 - `diff_mode` (Boolean) If enabled, show the changes made by Ansible tasks, where supported. This is equivalent to Ansible's `--diff` mode.
 - `execution_environment` (Number) Execution Environment ID to use for the job template.

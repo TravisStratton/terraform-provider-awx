@@ -30,7 +30,7 @@ func NewInventorySourceResource() resource.Resource {
 }
 
 type InventorySourceResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *InventorySourceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -39,7 +39,7 @@ func (r *InventorySourceResource) Metadata(ctx context.Context, req resource.Met
 
 func (r *InventorySourceResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX inventory_source.`,
+		Description: `Manage an Automation Controller inventory_source.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Inventory Source ID.",
@@ -204,7 +204,7 @@ func (r *InventorySourceResource) Configure(ctx context.Context, req resource.Co
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

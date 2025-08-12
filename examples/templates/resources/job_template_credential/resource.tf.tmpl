@@ -1,0 +1,24 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_inventory" "example" {
+  name         = "example"
+  description  = "example"
+  organization = {{.Prefix}}_organization.example.id
+}
+
+resource "{{.Prefix}}_job_template" "example" {
+  job_type  = "run"
+  name      = "test"
+  inventory = {{.Prefix}}_inventory.example.id
+  project   = {{.Prefix}}_organization.example.id
+  playbook  = "test.yml"
+}
+
+
+resource "{{.Prefix}}_job_template_credential" "example" {
+  credential_ids  = [1, 2, 3]
+  job_template_id = {{.Prefix}}_job_template.example.id
+}

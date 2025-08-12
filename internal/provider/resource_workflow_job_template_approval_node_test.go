@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -27,29 +28,29 @@ func TestAccWkflwJobTemplApprovalNodeResource(t *testing.T) {
 				Config: testAccWkflwJobTemplApprvlNodeResource1Config(nodeName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_approval_node.test",
+						fmt.Sprintf("%s_workflow_job_template_approval_node.test", configprefix.Prefix),
 						tfjsonpath.New("workflow_job_template_id"),
 						IdCompare,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template_approval_node.test",
+						fmt.Sprintf("%s_workflow_job_template_approval_node.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(nodeName),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template_approval_node.test",
+						fmt.Sprintf("%s_workflow_job_template_approval_node.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("a description for testing"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template_approval_node.test",
+						fmt.Sprintf("%s_workflow_job_template_approval_node.test", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(360),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template_approval_node.test_timeoutdefault",
+						fmt.Sprintf("%s_workflow_job_template_approval_node.test_timeoutdefault", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(0),
 					),
@@ -70,7 +71,7 @@ func TestAccWkflwJobTemplApprovalNodeResource(t *testing.T) {
 }
 
 func testAccWkflwJobTemplApprvlNodeResource1Config(nodeName string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -109,5 +110,5 @@ resource "awx_workflow_job_template_approval_node" "test_timeoutdefault" {
   name = "%s"
   description = "a description for testing"
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), nodeName, nodeName+"1")
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), nodeName, nodeName+"1"))
 }

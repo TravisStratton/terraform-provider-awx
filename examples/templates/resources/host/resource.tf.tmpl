@@ -1,0 +1,21 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_inventory" "example" {
+  name         = "example"
+  description  = "example"
+  organization = {{.Prefix}}_organization.example.id
+}
+
+resource "{{.Prefix}}_host" "example-variables" {
+  name        = "localhost"
+  description = "Example with jsonencoded variables for localhost"
+  inventory   = {{.Prefix}}_inventory.example.id
+  variables = jsonencode(
+    {
+      foo = "bar"
+    }
+  )
+}

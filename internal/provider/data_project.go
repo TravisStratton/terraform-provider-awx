@@ -22,7 +22,7 @@ func NewProjectDataSource() datasource.DataSource {
 }
 
 type ProjectDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *ProjectDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -123,7 +123,7 @@ func (d *ProjectDataSource) Configure(ctx context.Context, req datasource.Config
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

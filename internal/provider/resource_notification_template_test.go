@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -78,24 +79,24 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 				Config: testAccNotifTmplWebhookResource1Config(objectName, webhookConfigString),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-webhook-type",
+						fmt.Sprintf("%s_notification_template.example-webhook-type", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(objectName),
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.example-webhook-type",
+						fmt.Sprintf("%s_notification_template.example-webhook-type", configprefix.Prefix),
 						tfjsonpath.New("organization"),
-						"awx_organization.example",
+						fmt.Sprintf("%s_organization.example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdComparer,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-webhook-type",
+						fmt.Sprintf("%s_notification_template.example-webhook-type", configprefix.Prefix),
 						tfjsonpath.New("notification_type"),
 						knownvalue.StringExact("webhook"),
 					),
 					webhookConfigComparer1.AddStateValue(
-						"awx_notification_template.example-webhook-type",
+						fmt.Sprintf("%s_notification_template.example-webhook-type", configprefix.Prefix),
 						tfjsonpath.New("notification_configuration"),
 					),
 				},
@@ -111,23 +112,23 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 				Config: testAccNotifTmplSlackResource2Config(objectName2, slackConfigString),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-slack-type",
+						fmt.Sprintf("%s_notification_template.example-slack-type", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(objectName2),
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.example-slack-type",
+						fmt.Sprintf("%s_notification_template.example-slack-type", configprefix.Prefix),
 						tfjsonpath.New("organization"),
-						"awx_organization.example",
+						fmt.Sprintf("%s_organization.example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdComparer,
 					),
 					slackConfigComparer1.AddStateValue(
-						"awx_notification_template.example-slack-type",
+						fmt.Sprintf("%s_notification_template.example-slack-type", configprefix.Prefix),
 						tfjsonpath.New("notification_configuration"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-slack-type",
+						fmt.Sprintf("%s_notification_template.example-slack-type", configprefix.Prefix),
 						tfjsonpath.New("notification_type"),
 						knownvalue.StringExact("slack"),
 					),
@@ -138,19 +139,19 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 				Config: testAccNotifTmplSlackWithMessagesResourceConfig(objectName3, slackConfigString),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-slack-and-message",
+						fmt.Sprintf("%s_notification_template.example-slack-and-message", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(objectName3),
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.example-slack-and-message",
+						fmt.Sprintf("%s_notification_template.example-slack-and-message", configprefix.Prefix),
 						tfjsonpath.New("organization"),
-						"awx_organization.example",
+						fmt.Sprintf("%s_organization.example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdComparer,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_notification_template.example-slack-and-message",
+						fmt.Sprintf("%s_notification_template.example-slack-and-message", configprefix.Prefix),
 						tfjsonpath.New("messages"),
 						knownvalue.StringExact(`{"error":{"body":"","message":""},"started":{"body":"","message":"{{ job_friendly_name }} #{{ job.id }} '{{ job.name }}' {{ job.status }}: {{ url }} Custom Message"},"success":{"body":"","message":""},"workflow_approval":{"approved":{"body":"","message":""},"denied":{"body":"","message":""},"running":{"body":"","message":""},"timed_out":{"body":"","message":""}}}`),
 					),
@@ -161,7 +162,7 @@ func TestAccNotificationTemplateResource(t *testing.T) {
 }
 
 func testAccNotifTmplWebhookResource1Config(objectName, notifConfig string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "example" { 
 	name = "%s" 
 	description = "testing example" 
@@ -172,11 +173,11 @@ resource "awx_notification_template" "example-webhook-type" {
 	notification_type = "webhook"
 	organization      = awx_organization.example.id
 	notification_configuration = jsonencode(%s)
-  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig)
+  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig))
 }
 
 func testAccNotifTmplSlackResource2Config(objectName, notifConfig string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "example" { 
 	name = "%s" 
 	description = "testing example" 
@@ -187,11 +188,11 @@ resource "awx_notification_template" "example-slack-type" {
 	notification_type = "slack"
 	organization      = awx_organization.example.id
   notification_configuration = jsonencode(%s)
-  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig)
+  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig))
 }
 
 func testAccNotifTmplSlackWithMessagesResourceConfig(objectName, notifConfig string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "example" { 
 	name = "%s" 
 	description = "testing example" 
@@ -234,5 +235,5 @@ resource "awx_notification_template" "example-slack-and-message" {
 		}
 	  }
 	})
-  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig)
+  }`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), objectName, notifConfig))
 }

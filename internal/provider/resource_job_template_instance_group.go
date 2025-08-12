@@ -22,7 +22,7 @@ func NewJobTemplateInstanceGroupsResource() resource.Resource {
 }
 
 type JobTemplateInstanceGroupsResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type JobTemplateInstanceGroupsResourceModel struct {
@@ -56,7 +56,7 @@ func (r *JobTemplateInstanceGroupsResource) Configure(ctx context.Context, req r
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

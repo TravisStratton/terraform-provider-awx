@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -39,22 +40,22 @@ func TestAccExecutionEnvironmentResource(t *testing.T) {
 				Config: testAccExecutionEnvironmentResource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("image"),
 						knownvalue.StringExact(resource1.Image),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("pull"),
 						knownvalue.StringExact(resource1.Pull),
 					),
@@ -69,29 +70,29 @@ func TestAccExecutionEnvironmentResource(t *testing.T) {
 				Config: testAccExecutionEnvironmentResource2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("image"),
 						knownvalue.StringExact(resource2.Image),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("pull"),
 						knownvalue.StringExact(resource2.Pull),
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.test",
+						fmt.Sprintf("%s_credential.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_execution_environment.test",
+						fmt.Sprintf("%s_execution_environment.test", configprefix.Prefix),
 						tfjsonpath.New("credential"),
 						IdCompare,
 					),
@@ -102,18 +103,18 @@ func TestAccExecutionEnvironmentResource(t *testing.T) {
 }
 
 func testAccExecutionEnvironmentResource1Config(resource ExecutionEnvironmentAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_execution_environment" "test" {
   name        	= "%s"
   description 	= "%s"
   image   		= "%s"
   pull 			= "%s"
 }
-  `, resource.Name, resource.Description, resource.Image, resource.Pull)
+  `, resource.Name, resource.Description, resource.Image, resource.Pull))
 }
 
 func testAccExecutionEnvironmentResource2Config(resource ExecutionEnvironmentAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 data "awx_credential_type" "test" {
   name = "Container Registry"
   kind = "registry"
@@ -139,5 +140,5 @@ resource "awx_execution_environment" "test" {
   pull 			= "%s"
   credential	= awx_credential.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Image, resource.Pull)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Image, resource.Pull))
 }

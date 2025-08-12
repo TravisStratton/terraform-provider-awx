@@ -22,7 +22,7 @@ func NewJobTemplateCredentialResource() resource.Resource {
 }
 
 type JobTemplateCredentialResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type JobTemplateCredentialResourceModel struct {
@@ -70,7 +70,7 @@ func (r *JobTemplateCredentialResource) Configure(ctx context.Context, req resou
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

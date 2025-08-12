@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -37,22 +38,22 @@ func TestAccJobTemplateDataSource(t *testing.T) {
 				Config: testAccJobTemplateDataSource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-id",
+						fmt.Sprintf("data.%s_job_template.test-id", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-id",
+						fmt.Sprintf("data.%s_job_template.test-id", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-id",
+						fmt.Sprintf("data.%s_job_template.test-id", configprefix.Prefix),
 						tfjsonpath.New("job_type"),
 						knownvalue.StringExact(resource1.JobType),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-id",
+						fmt.Sprintf("data.%s_job_template.test-id", configprefix.Prefix),
 						tfjsonpath.New("playbook"),
 						knownvalue.StringExact(resource1.Playbook),
 					),
@@ -63,22 +64,22 @@ func TestAccJobTemplateDataSource(t *testing.T) {
 				Config: testAccJobTemplateDataSource2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-name",
+						fmt.Sprintf("data.%s_job_template.test-name", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-name",
+						fmt.Sprintf("data.%s_job_template.test-name", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-name",
+						fmt.Sprintf("data.%s_job_template.test-name", configprefix.Prefix),
 						tfjsonpath.New("job_type"),
 						knownvalue.StringExact(resource2.JobType),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_job_template.test-name",
+						fmt.Sprintf("data.%s_job_template.test-name", configprefix.Prefix),
 						tfjsonpath.New("playbook"),
 						knownvalue.StringExact(resource2.Playbook),
 					),
@@ -89,7 +90,7 @@ func TestAccJobTemplateDataSource(t *testing.T) {
 }
 
 func testAccJobTemplateDataSource1Config(resource JobTemplateAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-id" {
   name        = "%s"
 }
@@ -118,11 +119,11 @@ resource "awx_job_template" "test-id" {
 data "awx_job_template" "test-id" {
   id = awx_job_template.test-id.id
 }
-`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook)
+`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook))
 }
 
 func testAccJobTemplateDataSource2Config(resource JobTemplateAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-name" {
   name        = "%s"
 }
@@ -151,5 +152,5 @@ resource "awx_job_template" "test-name" {
 data "awx_job_template" "test-name" {
   id = awx_job_template.test-name.id
 }
-`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook)
+`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.JobType, resource.Playbook))
 }

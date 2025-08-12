@@ -27,7 +27,7 @@ func NewCredentialTypeResource() resource.Resource {
 }
 
 type CredentialTypeResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *CredentialTypeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -36,7 +36,7 @@ func (r *CredentialTypeResource) Metadata(ctx context.Context, req resource.Meta
 
 func (r *CredentialTypeResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX credential type.`,
+		Description: `Manage an Automation Controller credential type.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Credential type ID.",
@@ -79,7 +79,7 @@ func (r *CredentialTypeResource) Configure(ctx context.Context, req resource.Con
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

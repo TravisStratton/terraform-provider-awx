@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -43,24 +44,24 @@ func TestAccGroupResource(t *testing.T) {
 				Config: testAccGroupResourceConfig(Group1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_group.test",
+						fmt.Sprintf("%s_group.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(Group1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_group.test",
+						fmt.Sprintf("%s_group.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(Group1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_group.test",
+						fmt.Sprintf("%s_group.test", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(Group1.Variables),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_group.test",
+						fmt.Sprintf("%s_group.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
@@ -75,24 +76,24 @@ func TestAccGroupResource(t *testing.T) {
 				Config: testAccGroupResource2Config(Group2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_group.test2",
+						fmt.Sprintf("%s_group.test2", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(Group2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_group.test2",
+						fmt.Sprintf("%s_group.test2", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(Group2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_group.test2",
+						fmt.Sprintf("%s_group.test2", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(Group2.Variables),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test2",
+						fmt.Sprintf("%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_group.test2",
+						fmt.Sprintf("%s_group.test2", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
@@ -112,7 +113,7 @@ func TestAccGroupResource(t *testing.T) {
 }
 
 func testAccSecondInvResourceConfig(resource InventoryAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 	resource "awx_organization" "new-inv-test-org" {
 		name = "test-organizatio-%s"
 	}
@@ -120,25 +121,25 @@ func testAccSecondInvResourceConfig(resource InventoryAPIModel) string {
 		name = "%s"
 		organization = awx_organization.new-inv-test-org.id
 	}
-		`, acctest.RandString(5), resource.Name)
+		`, acctest.RandString(5), resource.Name))
 }
 
 // touches same group created by testAccGroupResource2Config(), but just changes the inventory value,
 //
 //	doing this to verify that the replace functionality works when updating this.
 func testAccInvPlanRecreateConfig(resource GroupAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_group" "test2" {
   name        = "%s"
   description = "%s"
   inventory   = awx_inventory.new-inventory.id
   variables   = jsonencode(%s)
 }
-  `, resource.Name, resource.Description, resource.Variables)
+  `, resource.Name, resource.Description, resource.Variables))
 }
 
 func testAccGroupResourceConfig(resource GroupAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "test-organization-%s"
   description = "test"
@@ -154,11 +155,11 @@ resource "awx_group" "test" {
   inventory   = awx_inventory.test.id
   variables   = jsonencode(%s)
 }
-  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables)
+  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables))
 }
 
 func testAccGroupResource2Config(resource GroupAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test2" {
   name        = "test-organization-%s"
   description = "test"
@@ -174,5 +175,5 @@ resource "awx_group" "test2" {
   inventory   = awx_inventory.test2.id
   variables   = jsonencode(%s)
 }
-  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables)
+  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables))
 }

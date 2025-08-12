@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -91,17 +92,17 @@ func TestAccCredentialResource(t *testing.T) {
 				Config: testAccCredential1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-machine",
+						fmt.Sprintf("%s_credential.test-machine", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-machine",
+						fmt.Sprintf("%s_credential.test-machine", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-machine",
+						fmt.Sprintf("%s_credential.test-machine", configprefix.Prefix),
 						tfjsonpath.New("inputs"),
 						knownvalue.StringExact(resource1inputs),
 					),
@@ -111,17 +112,17 @@ func TestAccCredentialResource(t *testing.T) {
 				Config: testAccCredential2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-source-control",
+						fmt.Sprintf("%s_credential.test-source-control", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-source-control",
+						fmt.Sprintf("%s_credential.test-source-control", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-source-control",
+						fmt.Sprintf("%s_credential.test-source-control", configprefix.Prefix),
 						tfjsonpath.New("inputs"),
 						knownvalue.StringExact(resource2inputs),
 					),
@@ -131,17 +132,17 @@ func TestAccCredentialResource(t *testing.T) {
 				Config: testAccCredential3Config(resource3),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource3.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource3.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("inputs"),
 						knownvalue.StringExact(resource3inputs),
 					),
@@ -157,17 +158,17 @@ func TestAccCredentialResource(t *testing.T) {
 				Config: testAccCredential3Config(resource4),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource4.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource4.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential.test-container-registry",
+						fmt.Sprintf("%s_credential.test-container-registry", configprefix.Prefix),
 						tfjsonpath.New("inputs"),
 						knownvalue.StringExact(resource4inputs),
 					),
@@ -178,7 +179,7 @@ func TestAccCredentialResource(t *testing.T) {
 }
 
 func testAccCredential1Config(resource CredentialAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-machine" {
   name        = "%s"
 }
@@ -193,11 +194,11 @@ resource "awx_credential" "test-machine" {
   credential_type = data.awx_credential_type.test-machine.id
   inputs = jsonencode(%s)
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs))
 }
 
 func testAccCredential2Config(resource CredentialAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-source-control" {
   name        = "%s"
 }
@@ -212,11 +213,11 @@ resource "awx_credential" "test-source-control" {
   credential_type = data.awx_credential_type.test-source-control.id
 	inputs = jsonencode(%s)
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs))
 }
 
 func testAccCredential3Config(resource CredentialAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-container-registry" {
   name        = "%s"
 }
@@ -231,5 +232,5 @@ resource "awx_credential" "test-container-registry" {
   credential_type = data.awx_credential_type.test-container-registry.id
   inputs = jsonencode(%s)
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs))
 }

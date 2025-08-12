@@ -1,0 +1,28 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_project" "example-git" {
+  name         = "example_git"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "git"
+  scm_url      = "git@github.com:user/repo.git"
+}
+
+resource "{{.Prefix}}_inventory" "example" {
+  name         = "example"
+  description  = "example"
+  organization = {{.Prefix}}_organization.example.id
+}
+
+resource "{{.Prefix}}_inventory_source" "github_inventory_source" {
+  name             = "example"
+  inventory        = {{.Prefix}}_inventory.example.id
+  source           = "scm"
+  source_project   = {{.Prefix}}_project.example_git.id
+  source_path      = "inventory"
+  overwrite        = true
+  overwrite_vars   = true
+  update_on_launch = true
+}

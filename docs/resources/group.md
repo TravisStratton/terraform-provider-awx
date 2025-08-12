@@ -3,12 +3,12 @@
 page_title: "awx_group Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX/AAP group.
+  Manage an Automation Controller/AAP group.
 ---
 
 # awx_group (Resource)
 
-Manage an AWX/AAP group.
+Manage an Automation Controller/AAP group.
 
 ## Example Usage
 

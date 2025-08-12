@@ -28,7 +28,7 @@ func NewProjectResource() resource.Resource {
 }
 
 type ProjectResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *ProjectResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -37,7 +37,7 @@ func (r *ProjectResource) Metadata(ctx context.Context, req resource.MetadataReq
 
 func (r *ProjectResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX project.`,
+		Description: `Manage an Automation Controller project.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Project ID.",
@@ -289,7 +289,7 @@ func (r *ProjectResource) Configure(ctx context.Context, req resource.ConfigureR
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

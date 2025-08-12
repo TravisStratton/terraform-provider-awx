@@ -19,7 +19,7 @@ func NewInventoryDataSource() datasource.DataSource {
 }
 
 type InventoryDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *InventoryDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -67,7 +67,7 @@ func (d *InventoryDataSource) Configure(ctx context.Context, req datasource.Conf
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

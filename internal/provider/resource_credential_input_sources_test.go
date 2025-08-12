@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -32,31 +33,31 @@ func TestAccCredentialInputSourcesResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					// first input source
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Testing create"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("input_field_name"),
 						knownvalue.StringExact("ssh_key_data"),
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_target_cred",
+						fmt.Sprintf("%s_credential.example_hashi_target_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("target_credential"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_source_cred",
+						fmt.Sprintf("%s_credential.example_hashi_source_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("source_credential"),
 						IdCompare,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("metadata"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
 							"auth_path":      knownvalue.StringExact(""),
@@ -68,31 +69,31 @@ func TestAccCredentialInputSourcesResource(t *testing.T) {
 					),
 					// second input source
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Testing create2"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("input_field_name"),
 						knownvalue.StringExact("username"),
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_target_cred",
+						fmt.Sprintf("%s_credential.example_hashi_target_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("target_credential"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_source_cred",
+						fmt.Sprintf("%s_credential.example_hashi_source_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("source_credential"),
 						IdCompare,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("metadata"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
 							"auth_path":      knownvalue.StringExact(""),
@@ -116,31 +117,31 @@ func TestAccCredentialInputSourcesResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					// first input source
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Testing create"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("input_field_name"),
 						knownvalue.StringExact("ssh_key_data"),
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_target_cred",
+						fmt.Sprintf("%s_credential.example_hashi_target_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("target_credential"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_source_cred",
+						fmt.Sprintf("%s_credential.example_hashi_source_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("source_credential"),
 						IdCompare,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src", configprefix.Prefix),
 						tfjsonpath.New("metadata"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
 							"auth_path":      knownvalue.StringExact(""),
@@ -152,31 +153,31 @@ func TestAccCredentialInputSourcesResource(t *testing.T) {
 					),
 					// second input source
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("Testing create2"),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("input_field_name"),
 						knownvalue.StringExact("username"),
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_target_cred",
+						fmt.Sprintf("%s_credential.example_hashi_target_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("target_credential"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_credential.example_hashi_source_cred",
+						fmt.Sprintf("%s_credential.example_hashi_source_cred", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("source_credential"),
 						IdCompare,
 					),
 					statecheck.ExpectKnownValue(
-						"awx_credential_input_sources.example_hashi_cred_input_src_2",
+						fmt.Sprintf("%s_credential_input_sources.example_hashi_cred_input_src_2", configprefix.Prefix),
 						tfjsonpath.New("metadata"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
 							"auth_path":      knownvalue.StringExact(""),
@@ -193,7 +194,7 @@ func TestAccCredentialInputSourcesResource(t *testing.T) {
 } // end func TestAccCredentialInputSourcesResource
 
 func testAccCredInputSrcStep1Config(orgName, srcCredName, tgtCredName, secretKey string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "example" {
   name        = "%s"
   description = "example"
@@ -257,5 +258,5 @@ resource "awx_credential_input_sources" "example_hashi_cred_input_src_2" {
     }
     target_credential = awx_credential.example_hashi_target_cred.id
     source_credential = awx_credential.example_hashi_source_cred.id
-}`, orgName, srcCredName, tgtCredName, secretKey)
+}`, orgName, srcCredName, tgtCredName, secretKey))
 }

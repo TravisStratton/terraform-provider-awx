@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -25,16 +26,16 @@ func TestAccJobTemplNotifStartedResource(t *testing.T) {
 				Config: testAccJobTemplNotifStarted1ResourceConfig(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_notification_template_started.test",
+						fmt.Sprintf("%s_job_template_notification_template_started.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.test1",
+						fmt.Sprintf("%s_notification_template.test1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_notification_template_started.test",
+						fmt.Sprintf("%s_job_template_notification_template_started.test", configprefix.Prefix),
 						tfjsonpath.New("notif_template_ids"),
 						StringListCompare,
 					),
@@ -49,23 +50,23 @@ func TestAccJobTemplNotifStartedResource(t *testing.T) {
 				Config: testAccJobTemplNotifStarted2ResourceConfig(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_notification_template_started.test",
+						fmt.Sprintf("%s_job_template_notification_template_started.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.test2",
+						fmt.Sprintf("%s_notification_template.test2", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_notification_template_started.test",
+						fmt.Sprintf("%s_job_template_notification_template_started.test", configprefix.Prefix),
 						tfjsonpath.New("notif_template_ids"),
 						StringListCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_notification_template.test3",
+						fmt.Sprintf("%s_notification_template.test3", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_notification_template_started.test",
+						fmt.Sprintf("%s_job_template_notification_template_started.test", configprefix.Prefix),
 						tfjsonpath.New("notif_template_ids"),
 						StringListCompare,
 					),
@@ -76,7 +77,7 @@ func TestAccJobTemplNotifStartedResource(t *testing.T) {
 }
 
 func testAccJobTemplNotifStarted1ResourceConfig() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -147,11 +148,11 @@ resource "awx_job_template_notification_template_started" "test" {
   job_template_id    = awx_job_template.test.id
   notif_template_ids = [awx_notification_template.test1.id]
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccJobTemplNotifStarted2ResourceConfig() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -264,5 +265,5 @@ resource "awx_job_template_notification_template_started" "test" {
   job_template_id    = awx_job_template.test.id
   notif_template_ids = [awx_notification_template.test2.id, awx_notification_template.test3.id]
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

@@ -26,7 +26,7 @@ func NewInstanceGroupResource() resource.Resource {
 }
 
 type InstanceGroupResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *InstanceGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -35,7 +35,7 @@ func (r *InstanceGroupResource) Metadata(ctx context.Context, req resource.Metad
 
 func (r *InstanceGroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX instance_group.`,
+		Description: `Manage an Automation Controller instance_group.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "InstanceGroup ID.",
@@ -140,7 +140,7 @@ func (r *InstanceGroupResource) Configure(ctx context.Context, req resource.Conf
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",

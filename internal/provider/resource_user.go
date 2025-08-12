@@ -1,3 +1,4 @@
+// SPECIAL: This file may require repo or controller-specific things.
 package provider
 
 import (
@@ -27,7 +28,7 @@ func NewUserResource() resource.Resource {
 }
 
 type UserResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *UserResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -36,7 +37,7 @@ func (r *UserResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *UserResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX user.`,
+		Description: `Manage an Automation Controller user.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -62,7 +63,7 @@ func (r *UserResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 			},
 			"password": schema.StringAttribute{
 				Required:    true,
-				Description: "User's password. If the password is updated in AWX, due to the AWX api, terraform will not know that it has been changed.",
+				Description: "User's password. If the password is updated in automation controller, due to the api, terraform will not know that it has been changed.",
 			},
 			"is_superuser": schema.BoolAttribute{
 				Optional:    true,
@@ -117,7 +118,7 @@ func (r *UserResource) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",

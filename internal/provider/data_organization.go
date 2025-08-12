@@ -22,7 +22,7 @@ func NewOrganizationDataSource() datasource.DataSource {
 }
 
 type OrganizationDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *OrganizationDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -74,7 +74,7 @@ func (d *OrganizationDataSource) Configure(ctx context.Context, req datasource.C
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

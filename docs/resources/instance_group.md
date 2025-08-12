@@ -3,12 +3,12 @@
 page_title: "awx_instance_group Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX instance_group.
+  Manage an Automation Controller instance_group.
 ---
 
 # awx_instance_group (Resource)
 
-Manage an AWX instance_group.
+Manage an Automation Controller instance_group.
 
 ## Example Usage
 
@@ -41,7 +41,7 @@ resource "awx_instance_group" "example-container" {
               "worker",
               "--private-data-dir=/runner"
             ],
-            "image" : "quay.io/ansible/awx-ee:latest",
+            "image" : "quay.io/ansible/ee:latest",
             "name" : "worker",
             "resources" : {
               "requests" : {

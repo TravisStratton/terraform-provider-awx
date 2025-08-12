@@ -25,7 +25,7 @@ resource "awx_workflow_job_template_node_label" "example_node_label" {
 ### Required
 
 - `id` (String) The ID of the containing workflow job template node.
-- `label_ids` (Set of Number) An unordered list of label IDs associated to a particular Workflwo Job Template node. Create new labels first with `awx_label` resource type.
+- `label_ids` (Set of Number) An unordered list of label IDs associated to a particular Workflwo Job Template node. Create new labels first with `Automation Controller_label` resource type.
 
 ## Import
 

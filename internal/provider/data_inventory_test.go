@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -40,34 +41,34 @@ func TestAccInventoryDataSource(t *testing.T) {
 				Config: testAccInventoryDataSource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(resource1.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.Null(),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("host_filter"),
 						knownvalue.Null(),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test1",
+						fmt.Sprintf("%s_organization.test1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"data.awx_inventory.test1",
+						fmt.Sprintf("data.%s_inventory.test1", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -78,34 +79,34 @@ func TestAccInventoryDataSource(t *testing.T) {
 				Config: testAccInventoryDataSource2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(resource2.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.StringExact(resource2.Kind),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("host_filter"),
 						knownvalue.StringExact(resource2.HostFilter),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test2",
+						fmt.Sprintf("%s_organization.test2", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"data.awx_inventory.test2",
+						fmt.Sprintf("data.%s_inventory.test2", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -116,7 +117,7 @@ func TestAccInventoryDataSource(t *testing.T) {
 }
 
 func testAccInventoryDataSource1Config(resource InventoryAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test1" {
   name        			= "%s"
 }
@@ -129,11 +130,11 @@ resource "awx_inventory" "test1" {
 data "awx_inventory" "test1" {
   id = awx_inventory.test1.id
 }
-`, acctest.RandString(5), resource.Name, resource.Description, resource.Variables)
+`, acctest.RandString(5), resource.Name, resource.Description, resource.Variables))
 }
 
 func testAccInventoryDataSource2Config(resource InventoryAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test2" {
   name        			= "%s"
 }
@@ -148,5 +149,5 @@ resource "awx_inventory" "test2" {
 data "awx_inventory" "test2" {
   id = awx_inventory.test2.id
 }
-`, acctest.RandString(5), resource.Name, resource.Description, resource.Variables, resource.Kind, resource.HostFilter)
+`, acctest.RandString(5), resource.Name, resource.Description, resource.Variables, resource.Kind, resource.HostFilter))
 }

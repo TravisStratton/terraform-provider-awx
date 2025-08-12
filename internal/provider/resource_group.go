@@ -24,7 +24,7 @@ func NewGroupResource() resource.Resource {
 }
 
 type GroupResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *GroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -33,7 +33,7 @@ func (r *GroupResource) Metadata(ctx context.Context, req resource.MetadataReque
 
 func (r *GroupResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX/AAP group.`,
+		Description: `Manage an Automation Controller/AAP group.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Group ID.",
@@ -70,7 +70,7 @@ func (r *GroupResource) Configure(ctx context.Context, req resource.ConfigureReq
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

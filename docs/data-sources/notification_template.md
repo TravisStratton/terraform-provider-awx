@@ -34,6 +34,6 @@ data "awx_notification_template" "example-name" {
 
 - `description` (String) Defaults to `""`
 - `messages` (String) json
-- `notification_configuration` (String) json. This value depends on the `notification_type` chosen. But, the value should be json. E.g. `notification_configuration = jsonencode(blah blah blah)`. The AWX Tower API never returns a value for Token. So, this provider is coded to ignore changes to that field.
+- `notification_configuration` (String) json. This value depends on the `notification_type` chosen. But, the value should be json. E.g. `notification_configuration = jsonencode(blah blah blah)`. The automation controller API never returns a value for Token. So, this provider is coded to ignore changes to that field.
 - `notification_type` (String) Only `slack` and `webhook` are currently supported in this provider. Choose from: `email`, `grafan`, `irc`, `mattermost`, `pagerduty`, `rocketchat`, `slack`, `twilio`, `webhook`.
 - `organization` (Number) Organization ID for the notification template.

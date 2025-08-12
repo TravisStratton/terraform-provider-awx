@@ -3,12 +3,12 @@
 page_title: "awx_host Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX host.
+  Manage an Automation Controller host.
 ---
 
 # awx_host (Resource)
 
-Manage an AWX host.
+Manage an Automation Controller host.
 
 ## Example Usage
 

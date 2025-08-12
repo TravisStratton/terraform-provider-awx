@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -24,23 +25,23 @@ func TestAccWkflwJobTemplJobNodeResource(t *testing.T) {
 				Config: testAccWkflwJobTemplJobNodeResource1Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_job_node.test",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test", configprefix.Prefix),
 						tfjsonpath.New("unified_job_template"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_job_node.test",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test", configprefix.Prefix),
 						tfjsonpath.New("workflow_job_template_id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_job_node.test",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
@@ -55,16 +56,16 @@ func TestAccWkflwJobTemplJobNodeResource(t *testing.T) {
 				Config: testAccWkflwJobTemplJobNodeResource2Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_job_node.test",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test", configprefix.Prefix),
 						tfjsonpath.New("unified_job_template"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_job_node.test",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test", configprefix.Prefix),
 						tfjsonpath.New("workflow_job_template_id"),
 						IdCompare,
 					),
@@ -75,7 +76,7 @@ func TestAccWkflwJobTemplJobNodeResource(t *testing.T) {
 }
 
 func testAccWkflwJobTemplJobNodeResource1Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -106,11 +107,11 @@ resource "awx_workflow_job_template_job_node" "test" {
   workflow_job_template_id 	= awx_workflow_job_template.test.id
   inventory 				= awx_inventory.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccWkflwJobTemplJobNodeResource2Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -140,5 +141,5 @@ resource "awx_workflow_job_template_job_node" "test" {
   unified_job_template     = awx_job_template.test.id
   workflow_job_template_id = awx_workflow_job_template.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

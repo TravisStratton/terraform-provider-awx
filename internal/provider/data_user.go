@@ -22,7 +22,7 @@ func NewUserDataSource() datasource.DataSource {
 }
 
 type UserDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *UserDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -83,7 +83,7 @@ func (d *UserDataSource) Configure(ctx context.Context, req datasource.Configure
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

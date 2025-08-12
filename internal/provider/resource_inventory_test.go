@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -43,34 +44,34 @@ func TestAccInventoryResource(t *testing.T) {
 				Config: testAccInventoryResource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(resource1.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.Null(),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("host_filter"),
 						knownvalue.Null(),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -85,34 +86,34 @@ func TestAccInventoryResource(t *testing.T) {
 				Config: testAccInventoryResource1Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(resource2.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.Null(),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("host_filter"),
 						knownvalue.Null(),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -122,34 +123,34 @@ func TestAccInventoryResource(t *testing.T) {
 				Config: testAccInventoryResource3Config(resource3),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource3.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource3.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(resource3.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.StringExact(resource3.Kind),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("host_filter"),
 						knownvalue.StringExact(resource3.HostFilter),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test3",
+						fmt.Sprintf("%s_organization.test3", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory.test3",
+						fmt.Sprintf("%s_inventory.test3", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -160,7 +161,7 @@ func TestAccInventoryResource(t *testing.T) {
 }
 
 func testAccInventoryResource1Config(resource InventoryAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        			= "%s"
 }
@@ -170,11 +171,11 @@ resource "awx_inventory" "test" {
   organization = awx_organization.test.id
   variables    = jsonencode(%s)
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Variables)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Variables))
 }
 
 func testAccInventoryResource3Config(resource InventoryAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test3" {
   name        			= "%s"
 }
@@ -186,5 +187,5 @@ resource "awx_inventory" "test3" {
   kind			= "%s"
   host_filter	= "%s"
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Variables, resource.Kind, resource.HostFilter)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Variables, resource.Kind, resource.HostFilter))
 }

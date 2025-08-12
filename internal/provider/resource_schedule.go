@@ -24,7 +24,7 @@ func NewScheduleResource() resource.Resource {
 }
 
 type ScheduleResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *ScheduleResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -33,7 +33,7 @@ func (r *ScheduleResource) Metadata(ctx context.Context, req resource.MetadataRe
 
 func (r *ScheduleResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX schedule.`,
+		Description: `Manage an Automation Controller schedule.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Schedule ID.",
@@ -73,7 +73,7 @@ func (r *ScheduleResource) Configure(ctx context.Context, req resource.Configure
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

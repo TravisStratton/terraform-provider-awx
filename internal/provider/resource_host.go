@@ -26,7 +26,7 @@ func NewHostResource() resource.Resource {
 }
 
 type HostResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *HostResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -35,7 +35,7 @@ func (r *HostResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *HostResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX host.`,
+		Description: `Manage an Automation Controller host.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Description: "Host ID.",
@@ -80,7 +80,7 @@ func (r *HostResource) Configure(ctx context.Context, req resource.ConfigureRequ
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

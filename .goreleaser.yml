@@ -1,3 +1,5 @@
+# SPECIAL: Hardcoded provider prefix required in this file
+
 # Visit https://goreleaser.com for documentation on how to customize this
 # behavior.
 version: 2
@@ -14,6 +16,7 @@ builds:
   mod_timestamp: '{{ .CommitTimestamp }}'
   flags:
     - -trimpath
+    - -tags=repoAWX # SPECIAL
   ldflags:
     - '-s -w -X main.version={{.Version}} -X main.commit={{.Commit}}'
   goos:

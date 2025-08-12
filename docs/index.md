@@ -3,12 +3,12 @@
 page_title: "awx Provider"
 subcategory: ""
 description: |-
-  This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).
+  This is a Terraform Provider for managing resources in Automation Controller such as AWX/Tower or Ansible Automation Platform (AAP).
 ---
 
 # awx Provider
 
-This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).
+This is a Terraform Provider for managing resources in Automation Controller such as AWX/Tower or Ansible Automation Platform (AAP).
 
 ## Example Usage
 
@@ -23,7 +23,7 @@ terraform {
 
 provider "awx" {
   endpoint = "https://tower.example.com"
-  token    = "awxtoken"
+  token    = "token"
 }
 
 provider "awx" {
@@ -56,11 +56,11 @@ provider "awx" {
 ### Optional
 
 - `api_retry` (Attributes) An optional block to define if the provider should retry GET/read API requests that intitially fail. (see [below for nested schema](#nestedatt--api_retry))
-- `endpoint` (String) URL for AWX (i.e. https://tower.example.com)
-- `password` (String) AWX password (instead of token). You can also set this using the TOWER_PASSWORD environment variable.
-- `platform` (String) Does the endpoint point to an Ansible Automation Platform (AAP) version 2.5, verion 2.4, or AWX/Tower environment? Acceptable values are `awx`, `aap2.4`, or `aap2.5`. A default value of `awx` will be assumed if this field is not set. You can also set this using the TOWER_PLATFORM environment variable.
-- `token` (String) AWX access token (instead of username/password). You can also set this using the TOWER_OAUTH_TOKEN environment variable.
-- `username` (String) AWX username (instead of token). You can also set this using the TOWER_USERNAME environment variable.
+- `endpoint` (String) URL for automation controller (i.e. https://tower.example.com)
+- `password` (String) Automation controller password (instead of token). You can also set this using the TOWER_PASSWORD environment variable.
+- `platform` (String) Does the endpoint point to an Ansible Automation Platform (AAP) version 2.5, verion 2.4, or AWX/Tower environment? Acceptable values are `awx`, `aap2.4`, or `aap2.5`. A default value of `Automation Controller` will be assumed if this field is not set. You can also set this using the TOWER_PLATFORM environment variable.
+- `token` (String) Automation controller access token (instead of username/password). You can also set this using the TOWER_OAUTH_TOKEN environment variable.
+- `username` (String) Automation controller username (instead of token). You can also set this using the TOWER_USERNAME environment variable.
 
 <a id="nestedatt--api_retry"></a>
 ### Nested Schema for `api_retry`

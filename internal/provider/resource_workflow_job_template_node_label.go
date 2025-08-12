@@ -22,7 +22,7 @@ func NewWorkflowJobTemplatesNodeLabelResource() resource.Resource {
 }
 
 type WorkflowJobTemplatesNodeLabelResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type WorkflowJobTemplatesNodeLabelResourceModel struct {
@@ -45,7 +45,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Schema(ctx context.Context, req 
 			},
 			"label_ids": schema.SetAttribute{
 				Required:    true,
-				Description: "An unordered list of label IDs associated to a particular Workflwo Job Template node. Create new labels first with `awx_label` resource type.",
+				Description: "An unordered list of label IDs associated to a particular Workflwo Job Template node. Create new labels first with `Automation Controller_label` resource type.",
 				ElementType: types.Int32Type,
 			},
 		},
@@ -57,7 +57,7 @@ func (r *WorkflowJobTemplatesNodeLabelResource) Configure(ctx context.Context, r
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

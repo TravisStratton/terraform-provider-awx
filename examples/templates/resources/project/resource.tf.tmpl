@@ -1,0 +1,43 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_project" "example-git" {
+  name         = "example_git"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "git"
+  scm_url      = "git@github.com:user/repo.git"
+}
+
+resource "{{.Prefix}}_project" "example-svn" {
+  name         = "example_svn"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "svn"
+  scm_url      = "svn://<your_ip>/<repository_name>"
+}
+
+resource "{{.Prefix}}_project" "example-archive" {
+  name         = "example_archive"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "archive"
+  scm_url      = "https://github.com/user/repo"
+}
+
+resource "{{.Prefix}}_project" "example-manual" {
+  name         = "example_manual"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "manual"
+  local_path   = "directory/on/controller"
+}
+
+data "{{.Prefix}}_credential" "example-insights" {
+  id = "1"
+}
+
+resource "{{.Prefix}}_project" "example-insights" {
+  name         = "example_insights"
+  organization = {{.Prefix}}_organization.example.id
+  scm_type     = "insights"
+  credential   = data.{{.Prefix}}_credential.example_insights.id
+}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -29,19 +30,19 @@ func TestAccTeamResource(t *testing.T) {
 				Config: testAccTeamResourceConfig(teamName, teamDesc),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(teamName),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(teamDesc),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("aap25_gateway_id"),
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -56,19 +57,19 @@ func TestAccTeamResource(t *testing.T) {
 				Config: testAccTeamResourceConfig(teamName, teamDesc2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(teamName),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(teamDesc2),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("aap25_gateway_id"),
-						"awx_team.test",
+						fmt.Sprintf("%s_team.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -79,7 +80,7 @@ func TestAccTeamResource(t *testing.T) {
 }
 
 func testAccTeamResourceConfig(teamName, teamDesc string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name = "%s"
 }
@@ -89,5 +90,5 @@ resource "awx_team" "test" {
   organization = awx_organization.test.aap25_gateway_id
   description  = "%s"
 }
-`, acctest.RandString(5), teamName, teamDesc)
+`, acctest.RandString(5), teamName, teamDesc))
 }

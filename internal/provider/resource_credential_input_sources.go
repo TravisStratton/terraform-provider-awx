@@ -23,7 +23,7 @@ func NewCredentialInputSourcesResource() resource.Resource {
 }
 
 type CredentialInputSourcesResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *CredentialInputSourcesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -71,11 +71,11 @@ func (r *CredentialInputSourcesResource) Configure(ctx context.Context, req reso
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *AwxClient, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *providerClient, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
@@ -26,44 +27,44 @@ func TestAccGroupHostResource(t *testing.T) {
 				Config: testAccGrpHstOrgInv() + testAccGrpHst1stPass() + testAccGrpHst1stPassGrp2(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp-host-link",
+						fmt.Sprintf("%s_group_host.grp-host-link", configprefix.Prefix),
 						tfjsonpath.New("group_id"),
-						"awx_group.group-example",
+						fmt.Sprintf("%s_group.group-example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp-host-link",
+						fmt.Sprintf("%s_group_host.grp-host-link", configprefix.Prefix),
 						tfjsonpath.New("host_id"),
-						"awx_host.host-1",
+						fmt.Sprintf("%s_host.host-1", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp-host-link-2",
+						fmt.Sprintf("%s_group_host.grp-host-link-2", configprefix.Prefix),
 						tfjsonpath.New("group_id"),
-						"awx_group.group-example",
+						fmt.Sprintf("%s_group.group-example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp-host-link-2",
+						fmt.Sprintf("%s_group_host.grp-host-link-2", configprefix.Prefix),
 						tfjsonpath.New("host_id"),
-						"awx_host.host-2",
+						fmt.Sprintf("%s_host.host-2", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp2-host-link",
+						fmt.Sprintf("%s_group_host.grp2-host-link", configprefix.Prefix),
 						tfjsonpath.New("group_id"),
-						"awx_group.group-example-2",
+						fmt.Sprintf("%s_group.group-example-2", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_group_host.grp2-host-link",
+						fmt.Sprintf("%s_group_host.grp2-host-link", configprefix.Prefix),
 						tfjsonpath.New("host_id"),
-						"awx_host.host-2",
+						fmt.Sprintf("%s_host.host-2", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
@@ -82,7 +83,7 @@ func TestAccGroupHostResource(t *testing.T) {
 }
 
 func testAccGrpHstOrgInv() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "example" {
   name        = "%s"
   description = "example"
@@ -93,11 +94,11 @@ resource "awx_inventory" "example" {
   description  = "example"
   organization = awx_organization.example.id
 }	
-	`, acctest.RandString(5), acctest.RandString(5))
+	`, acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccGrpHst1stPass() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_group" "group-example" {
   name        = "%s"
   description = "Example with jsonencoded variables."
@@ -130,11 +131,11 @@ resource "awx_group_host" "grp-host-link-2" {
   host_id = awx_host.host-2.id
 }
 
-	`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+	`, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccGrpHst1stPassGrp2() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_group" "group-example-2" {
   name        = "%s"
   description = "A second group example."
@@ -145,11 +146,11 @@ resource "awx_group_host" "grp2-host-link" {
   group_id = awx_group.group-example-2.id
   host_id = awx_host.host-2.id
 }	
-	`, acctest.RandString(5))
+	`, acctest.RandString(5)))
 }
 
 func testAccGrpHst2ndPassGrp2() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_group" "group-example-2" {
   name        = "%s"
   description = "A second group example."
@@ -160,5 +161,5 @@ resource "awx_group_host" "grp2-host-link" {
   group_id = awx_group.group-example-2.id
   host_id = awx_host.host-1.id
 }	
-	`, acctest.RandString(5))
+	`, acctest.RandString(5)))
 }

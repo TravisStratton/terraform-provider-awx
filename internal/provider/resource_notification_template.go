@@ -27,7 +27,7 @@ func NewNotificationTemplatesResource() resource.Resource {
 }
 
 type NotificationTemplatesResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *NotificationTemplatesResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,7 +68,7 @@ func (r *NotificationTemplatesResource) Schema(ctx context.Context, req resource
 			},
 			"notification_configuration": schema.StringAttribute{
 				Optional:    true,
-				Description: "json. This value depends on the `notification_type` chosen. But, the value should be json. E.g. `notification_configuration = jsonencode(blah blah blah)`. The AWX Tower API never returns a value for Token. So, this provider is coded to ignore changes to that field.",
+				Description: "json. This value depends on the `notification_type` chosen. But, the value should be json. E.g. `notification_configuration = jsonencode(blah blah blah)`. The Automation Controller Tower API never returns a value for Token. So, this provider is coded to ignore changes to that field.",
 			},
 			"messages": schema.StringAttribute{
 				Optional:    true,
@@ -83,7 +83,7 @@ func (r *NotificationTemplatesResource) Configure(ctx context.Context, req resou
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

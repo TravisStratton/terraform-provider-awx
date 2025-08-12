@@ -3,12 +3,12 @@
 page_title: "awx_team Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX team.
+  Manage a team.
 ---
 
 # awx_team (Resource)
 
-Manage an AWX team.
+Manage a team.
 
 
 

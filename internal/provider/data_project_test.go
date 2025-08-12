@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -40,34 +41,34 @@ func TestAccProjectDataSource(t *testing.T) {
 				Config: testAccProjectDataSourceIDConfig(project1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project1.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project1.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project1.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test-id",
+						fmt.Sprintf("%s_organization.test-id", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"data.awx_project.test-id",
+						fmt.Sprintf("data.%s_project.test-id", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -78,34 +79,34 @@ func TestAccProjectDataSource(t *testing.T) {
 				Config: testAccProjectDataSourceNameConfig(project2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project2.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project2.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project2.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test-name",
+						fmt.Sprintf("%s_organization.test-name", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"data.awx_project.test-name",
+						fmt.Sprintf("data.%s_project.test-name", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -116,7 +117,7 @@ func TestAccProjectDataSource(t *testing.T) {
 }
 
 func testAccProjectDataSourceIDConfig(resource ProjectAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-id" {
   name        			= "%s"
 }
@@ -131,11 +132,11 @@ resource "awx_project" "test-id" {
 data "awx_project" "test-id" {
   id = awx_project.test-id.id
 }
-`, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.Timeout)
+`, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.Timeout))
 }
 
 func testAccProjectDataSourceNameConfig(resource ProjectAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-name" {
   name        			= "%s"
 }
@@ -150,5 +151,5 @@ resource "awx_project" "test-name" {
 data "awx_project" "test-name" {
   name = awx_project.test-name.name
 }
-`, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.Timeout)
+`, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.Timeout))
 }

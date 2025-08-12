@@ -1,3 +1,4 @@
+// SPECIAL: Be sure to update any desriptions to match repo & run make generate
 package provider
 
 import (
@@ -9,6 +10,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int32validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/providervalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
@@ -24,19 +26,19 @@ import (
 )
 
 // Ensure Provider satisfies various provider interfaces.
-var _ provider.Provider = &awxProvider{}
-var _ provider.ProviderWithFunctions = &awxProvider{}
+var _ provider.Provider = &theProvider{}
+var _ provider.ProviderWithFunctions = &theProvider{}
 
-// awxProvider defines the provider implementation.
-type awxProvider struct {
+// theProvider defines the provider implementation.
+type theProvider struct {
 	// version is set to the provider version on release, "dev" when the
 	// provider is built and ran locally, and "test" when running acceptance
 	// testing.
 	version string
 }
 
-// awxProviderModel describes the provider data model.
-type awxProviderModel struct {
+// theProviderModel describes the provider data model.
+type theProviderModel struct {
 	Endpoint types.String `tfsdk:"endpoint"`
 	Token    types.String `tfsdk:"token"`
 	Username types.String `tfsdk:"username"`
@@ -50,33 +52,33 @@ type apiRetryModel struct {
 	APIretryDelaySeconds types.Int32 `tfsdk:"api_retry_delay_seconds"`
 }
 
-func (p *awxProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "awx"
+func (p *theProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
+	resp.TypeName = configprefix.Prefix
 	resp.Version = p.version
 }
 
-func (p *awxProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *theProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).",
+		Description: "This is a Terraform Provider for managing resources in Automation Controller such as AWX/Tower or Ansible Automation Platform (AAP).",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
-				Description: "URL for AWX (i.e. https://tower.example.com)",
+				Description: "URL for automation controller (i.e. https://tower.example.com)",
 				Optional:    true,
 			},
 			"token": schema.StringAttribute{
-				Description: "AWX access token (instead of username/password). You can also set this using the TOWER_OAUTH_TOKEN environment variable.",
+				Description: "Automation controller access token (instead of username/password). You can also set this using the TOWER_OAUTH_TOKEN environment variable.",
 				Optional:    true,
 			},
 			"username": schema.StringAttribute{
-				Description: "AWX username (instead of token). You can also set this using the TOWER_USERNAME environment variable.",
+				Description: "Automation controller username (instead of token). You can also set this using the TOWER_USERNAME environment variable.",
 				Optional:    true,
 			},
 			"password": schema.StringAttribute{
-				Description: "AWX password (instead of token). You can also set this using the TOWER_PASSWORD environment variable.",
+				Description: "Automation controller password (instead of token). You can also set this using the TOWER_PASSWORD environment variable.",
 				Optional:    true,
 			},
 			"platform": schema.StringAttribute{
-				Description: "Does the endpoint point to an Ansible Automation Platform (AAP) version 2.5, verion 2.4, or AWX/Tower environment? Acceptable values are `awx`, `aap2.4`, or `aap2.5`. A default value of `awx` will be assumed if this field is not set. You can also set this using the TOWER_PLATFORM environment variable.",
+				Description: "Does the endpoint point to an Ansible Automation Platform (AAP) version 2.5, verion 2.4, or AWX/Tower environment? Acceptable values are `awx`, `aap2.4`, or `aap2.5`. A default value of `Automation Controller` will be assumed if this field is not set. You can also set this using the TOWER_PLATFORM environment variable.",
 				Optional:    true,
 				Validators: []validator.String{
 					stringvalidator.OneOf("aap2.4", "aap2.5", "awx"),
@@ -106,7 +108,7 @@ func (p *awxProvider) Schema(ctx context.Context, req provider.SchemaRequest, re
 	}
 }
 
-func (p *awxProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
+func (p *theProvider) ConfigValidators(ctx context.Context) []provider.ConfigValidator {
 	return []provider.ConfigValidator{
 		providervalidator.Conflicting(
 			path.MatchRoot("token"),
@@ -123,12 +125,12 @@ func (p *awxProvider) ConfigValidators(ctx context.Context) []provider.ConfigVal
 	}
 }
 
-func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+func (p *theProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
 	var (
 		token, endpoint, username, password, auth, platform string
 	)
 
-	var data awxProviderModel
+	var data theProviderModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
 
@@ -204,7 +206,7 @@ func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureReque
 		Timeout: 30 * time.Second,
 	}
 
-	client := new(AwxClient)
+	client := new(providerClient)
 
 	client.client = httpclient
 	client.endpoint = endpoint
@@ -292,7 +294,7 @@ func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureReque
 	resp.ResourceData = client
 }
 
-func (p *awxProvider) Resources(ctx context.Context) []func() resource.Resource {
+func (p *theProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewExecutionEnvironmentResource,
 		NewCredentialResource,
@@ -329,7 +331,7 @@ func (p *awxProvider) Resources(ctx context.Context) []func() resource.Resource 
 	}
 }
 
-func (p *awxProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
+func (p *theProvider) DataSources(ctx context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
 		NewCredentialDataSource,
 		NewCredentialTypeDataSource,
@@ -349,7 +351,7 @@ func (p *awxProvider) DataSources(ctx context.Context) []func() datasource.DataS
 	}
 }
 
-func (p *awxProvider) Functions(ctx context.Context) []func() function.Function {
+func (p *theProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
 		//NewExampleFunction,
 	}
@@ -357,7 +359,7 @@ func (p *awxProvider) Functions(ctx context.Context) []func() function.Function 
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
-		return &awxProvider{
+		return &theProvider{
 			version: version,
 		}
 	}

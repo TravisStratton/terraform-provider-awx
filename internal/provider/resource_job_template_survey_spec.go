@@ -27,7 +27,7 @@ func NewJobTemplateSurveyResource() resource.Resource {
 }
 
 type JobTemplateSurveyResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type JobTemplateSurveyResourceModel struct {
@@ -154,7 +154,7 @@ func (r *JobTemplateSurveyResource) Configure(ctx context.Context, req resource.
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

@@ -23,7 +23,7 @@ func NewTeamResource() resource.Resource {
 }
 
 type TeamResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -32,7 +32,7 @@ func (r *TeamResource) Metadata(ctx context.Context, req resource.MetadataReques
 
 func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "Manage an AWX team.",
+		Description: "Manage a team.",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -60,11 +60,11 @@ func (r *TeamResource) Configure(ctx context.Context, req resource.ConfigureRequ
 	if req.ProviderData == nil {
 		return
 	}
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",
-			fmt.Sprintf("Expected *AwxClient, got: %T", req.ProviderData),
+			fmt.Sprintf("Expected *providerClient, got: %T", req.ProviderData),
 		)
 		return
 	}

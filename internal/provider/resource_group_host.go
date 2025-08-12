@@ -22,7 +22,7 @@ func NewGroupHostResource() resource.Resource {
 }
 
 type GroupHostResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *GroupHostResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -56,7 +56,7 @@ func (r *GroupHostResource) Configure(ctx context.Context, req resource.Configur
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(
@@ -158,7 +158,7 @@ func (r *GroupHostResource) Read(ctx context.Context, req resource.ReadRequest, 
 	if result.Count != 1 {
 
 		resp.Diagnostics.AddError(
-			"Incorrect number of awx_group_host returned by Ids",
+			"Incorrect number of group hosts returned by Ids",
 			fmt.Sprintf("Unable to read groups/id/hosts/?id=x as API returned %v results.", result.Count))
 		return
 	}

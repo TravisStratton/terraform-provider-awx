@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -25,16 +26,16 @@ func TestAccWkflwJobTemplJobNodeFailureResource(t *testing.T) {
 				Config: testAccWkflwJobTemplJobNodeFailureResource1Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test1",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_failure.test",
+						fmt.Sprintf("%s_workflow_job_template_node_failure.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test2",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test2", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_failure.test",
+						fmt.Sprintf("%s_workflow_job_template_node_failure.test", configprefix.Prefix),
 						tfjsonpath.New("failure_ids"),
 						StringListCompare,
 					),
@@ -49,23 +50,23 @@ func TestAccWkflwJobTemplJobNodeFailureResource(t *testing.T) {
 				Config: testAccWkflwJobTemplJobNodeFailureResource2Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test3",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test3", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_failure.test",
+						fmt.Sprintf("%s_workflow_job_template_node_failure.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test4",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test4", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_failure.test",
+						fmt.Sprintf("%s_workflow_job_template_node_failure.test", configprefix.Prefix),
 						tfjsonpath.New("failure_ids"),
 						StringListCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test5",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test5", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_failure.test",
+						fmt.Sprintf("%s_workflow_job_template_node_failure.test", configprefix.Prefix),
 						tfjsonpath.New("failure_ids"),
 						StringListCompare,
 					),
@@ -76,7 +77,7 @@ func TestAccWkflwJobTemplJobNodeFailureResource(t *testing.T) {
 }
 
 func testAccWkflwJobTemplJobNodeFailureResource1Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -116,11 +117,11 @@ resource "awx_workflow_job_template_node_failure" "test" {
   id              = awx_workflow_job_template_job_node.test1.id
   failure_ids = [awx_workflow_job_template_job_node.test2.id]
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccWkflwJobTemplJobNodeFailureResource2Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -165,5 +166,5 @@ resource "awx_workflow_job_template_node_failure" "test" {
   id              = awx_workflow_job_template_job_node.test3.id
   failure_ids = [awx_workflow_job_template_job_node.test4.id, awx_workflow_job_template_job_node.test5.id]
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/compare"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -30,19 +31,19 @@ func TestAccCredentialDataSource(t *testing.T) {
 				Config: testAccCredentialDataSourceConfig(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_credential.test",
+						fmt.Sprintf("data.%s_credential.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_credential.test",
+						fmt.Sprintf("data.%s_credential.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.CompareValuePairs(
-						"data.awx_credential_type.test",
+						fmt.Sprintf("data.%s_credential_type.test", configprefix.Prefix),
 						tfjsonpath.New("kind"),
-						"awx_credential.test",
+						fmt.Sprintf("%s_credential.test", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						compare.ValuesSame(),
 					),
@@ -53,7 +54,7 @@ func TestAccCredentialDataSource(t *testing.T) {
 }
 
 func testAccCredentialDataSourceConfig(resource CredentialAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -71,5 +72,5 @@ resource "awx_credential" "test" {
 data "awx_credential" "test" {
   id = awx_credential.test.id
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.Inputs))
 }

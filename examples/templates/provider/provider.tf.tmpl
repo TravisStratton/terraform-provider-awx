@@ -1,0 +1,35 @@
+terraform {
+  required_providers {
+    {{.Prefix}} = {
+      source = "{{.ProviderSource}}"
+    }
+  }
+}
+
+provider "{{.Prefix}}" {
+  endpoint = "https://tower.example.com"
+  token    = "token"
+}
+
+provider "{{.Prefix}}" {
+  endpoint = "http://tower.example.com"
+  username = "admin"
+  password = "password"
+}
+
+
+provider "{{.Prefix}}" {
+  endpoint = "http://aap.example.com"
+  token    = "mysecrettoken"
+  platform = "aap2.5"
+}
+
+provider "{{.Prefix}}" {
+  endpoint = "http://aap.example.com"
+  token    = "mysecrettoken"
+  platform = "aap2.5"
+  api_retry = {
+    api_retry_count         = 1
+    api_retry_delay_seconds = 2
+  }
+}

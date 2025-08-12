@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -65,39 +66,39 @@ func TestAccProjectResource(t *testing.T) {
 				Config: testAccProjectResourceConfig(project1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project1.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project1.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_update_on_launch"),
 						knownvalue.Bool(project1.ScmUpdOnLaunch),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project1.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -112,39 +113,39 @@ func TestAccProjectResource(t *testing.T) {
 				Config: testAccProjectResourceConfig(project2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project2.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project2.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("scm_update_on_launch"),
 						knownvalue.Bool(project2.ScmUpdOnLaunch),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project2.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -154,39 +155,39 @@ func TestAccProjectResource(t *testing.T) {
 				Config: testAccProjectResource3Config(project3),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project3.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project3.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project3.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project3.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("scm_update_on_launch"),
 						knownvalue.Bool(project3.ScmUpdOnLaunch),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project3.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test-svn",
+						fmt.Sprintf("%s_organization.test-svn", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_project.test-svn",
+						fmt.Sprintf("%s_project.test-svn", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -196,39 +197,39 @@ func TestAccProjectResource(t *testing.T) {
 				Config: testAccProjectResource4Config(project4),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(project4.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(project4.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("scm_type"),
 						knownvalue.StringExact(project4.ScmType),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("scm_url"),
 						knownvalue.StringExact(project4.ScmUrl),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("scm_update_on_launch"),
 						knownvalue.Bool(project4.ScmUpdOnLaunch),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("timeout"),
 						knownvalue.Int32Exact(int32(project4.Timeout)),
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test-archive",
+						fmt.Sprintf("%s_organization.test-archive", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_project.test-archive",
+						fmt.Sprintf("%s_project.test-archive", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -239,7 +240,7 @@ func TestAccProjectResource(t *testing.T) {
 }
 
 func testAccProjectResourceConfig(resource ProjectAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        			= "%s"
 }
@@ -252,11 +253,11 @@ resource "awx_project" "test" {
   scm_update_on_launch 	= %v
   timeout				= %d
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout))
 }
 
 func testAccProjectResource3Config(resource ProjectAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-svn" {
   name        			= "%s"
 }
@@ -269,11 +270,11 @@ resource "awx_project" "test-svn" {
   scm_update_on_launch 	= %v
   timeout				= %d
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout))
 }
 
 func testAccProjectResource4Config(resource ProjectAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-archive" {
   name        			= "%s"
 }
@@ -286,5 +287,5 @@ resource "awx_project" "test-archive" {
   scm_update_on_launch 	= %v
   timeout				= %d
 }
-  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout)
+  `, acctest.RandString(5), resource.Name, resource.Description, resource.ScmType, resource.ScmUrl, resource.ScmUpdOnLaunch, resource.Timeout))
 }

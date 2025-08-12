@@ -3,12 +3,12 @@
 page_title: "awx_label Resource - awx"
 subcategory: ""
 description: |-
-  Create a label resource. NOTE, the AWX Tower API does NOT contain a delete method for labels. Therefore, any terraform destroy actions will succeed in terraform and remove them from your state, but will not have necessarily removed the label from the AWX Tower instance.
+  Create a label resource. NOTE, the automation controller API does NOT contain a delete method for labels. Therefore, any terraform destroy actions will succeed in terraform and remove them from your state, but will not have necessarily removed the label from the instance.
 ---
 
 # awx_label (Resource)
 
-Create a label resource. NOTE, the AWX Tower API does NOT contain a delete method for labels. Therefore, any terraform destroy actions will succeed in terraform and remove them from your state, but will not have necessarily removed the label from the AWX Tower instance.
+Create a label resource. NOTE, the automation controller API does NOT contain a delete method for labels. Therefore, any terraform destroy actions will succeed in terraform and remove them from your state, but will not have necessarily removed the label from the instance.
 
 ## Example Usage
 

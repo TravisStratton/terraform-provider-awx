@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -39,22 +40,22 @@ func TestAccOrganizationDataSource(t *testing.T) {
 					Config: testAccOrganizationDataSourceIdConfig1(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource1.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource1.Description),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("default_environment"),
 							knownvalue.Int32Exact(int32(resource1.DefaultEnv)),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("max_hosts"),
 							knownvalue.Int32Exact(int32(resource1.MaxHosts)),
 						),
@@ -65,22 +66,22 @@ func TestAccOrganizationDataSource(t *testing.T) {
 					Config: testAccOrganizationDataSourceNameConfig1(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource2.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource2.Description),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("default_environment"),
 							knownvalue.Int32Exact(int32(resource2.DefaultEnv)),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("max_hosts"),
 							knownvalue.Int32Exact(int32(resource2.MaxHosts)),
 						),
@@ -109,12 +110,12 @@ func TestAccOrganizationDataSource(t *testing.T) {
 					Config: testAccOrganizationDataSourceIdConfig2(resource1),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource1.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-id",
+							fmt.Sprintf("data.%s_organization.test-id", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource1.Description),
 						),
@@ -125,12 +126,12 @@ func TestAccOrganizationDataSource(t *testing.T) {
 					Config: testAccOrganizationDataSourceNameConfig2(resource2),
 					ConfigStateChecks: []statecheck.StateCheck{
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("name"),
 							knownvalue.StringExact(resource2.Name),
 						),
 						statecheck.ExpectKnownValue(
-							"data.awx_organization.test-name",
+							fmt.Sprintf("data.%s_organization.test-name", configprefix.Prefix),
 							tfjsonpath.New("description"),
 							knownvalue.StringExact(resource2.Description),
 						),
@@ -142,7 +143,7 @@ func TestAccOrganizationDataSource(t *testing.T) {
 }
 
 func testAccOrganizationDataSourceIdConfig1(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-id" {
   name        			= "%s"
   description 			= "%s"
@@ -152,11 +153,11 @@ resource "awx_organization" "test-id" {
 data "awx_organization" "test-id" {
   id = awx_organization.test-id.id
 }
-`, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts)
+`, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts))
 }
 
 func testAccOrganizationDataSourceIdConfig2(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-id" {
   name        			= "%s"
   description 			= "%s"
@@ -164,11 +165,11 @@ resource "awx_organization" "test-id" {
 data "awx_organization" "test-id" {
   id = awx_organization.test-id.id
 }
-`, resource.Name, resource.Description)
+`, resource.Name, resource.Description))
 }
 
 func testAccOrganizationDataSourceNameConfig1(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-name" {
   name        			= "%s"
   description 			= "%s"
@@ -178,11 +179,11 @@ resource "awx_organization" "test-name" {
 data "awx_organization" "test-name" {
   name = awx_organization.test-name.name
 }
-`, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts)
+`, resource.Name, resource.Description, resource.DefaultEnv, resource.MaxHosts))
 }
 
 func testAccOrganizationDataSourceNameConfig2(resource OrganizationAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test-name" {
   name        			= "%s"
   description 			= "%s"
@@ -190,5 +191,5 @@ resource "awx_organization" "test-name" {
 data "awx_organization" "test-name" {
   name = awx_organization.test-name.name
 }
-`, resource.Name, resource.Description)
+`, resource.Name, resource.Description))
 }

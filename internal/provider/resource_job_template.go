@@ -29,7 +29,7 @@ func NewJobTemplateResource() resource.Resource {
 }
 
 type JobTemplateResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *JobTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -280,7 +280,7 @@ func (r *JobTemplateResource) Schema(ctx context.Context, req resource.SchemaReq
 			},
 			"custom_virtualenv": schema.StringAttribute{
 				Optional:    true,
-				Description: "Local absolute file path containing a custom Python virtualenv to use. Only compatible with older versions of AWX/Tower. Deprecated, will be removed in the future",
+				Description: "Local absolute file path containing a custom Python virtualenv to use. Only compatible with older versions of Tower. Deprecated, will be removed in the future",
 			},
 			"job_slice_count": schema.Int32Attribute{
 				Optional:    true,
@@ -342,7 +342,7 @@ func (r *JobTemplateResource) Configure(ctx context.Context, req resource.Config
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

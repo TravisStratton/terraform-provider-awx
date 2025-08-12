@@ -3,12 +3,12 @@
 page_title: "awx_execution_environment Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX Execution Environment.
+  Manage an Automation Controller Execution Environment.
 ---
 
 # awx_execution_environment (Resource)
 
-Manage an AWX Execution Environment.
+Manage an Automation Controller Execution Environment.
 
 ## Example Usage
 
@@ -16,7 +16,7 @@ Manage an AWX Execution Environment.
 resource "awx_execution_environment" "example" {
   name        = "example"
   description = "example description"
-  image       = "quay.io/ansible/awx-ee:latest"
+  image       = "quay.io/ansible/ee:latest"
   pull        = "always"
 }
 ```

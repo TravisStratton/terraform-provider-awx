@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -40,27 +41,27 @@ func TestAccScheduleResource(t *testing.T) {
 				Config: testAccScheduleResourceConfig(schedule1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(schedule1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(schedule1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("rrule"),
 						knownvalue.StringExact(schedule1.Rrule),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("unified_job_template"),
 						knownvalue.Int32Exact(int32(schedule1.UnifiedJobTemplate)),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(schedule1.Enabled),
 					),
@@ -75,27 +76,27 @@ func TestAccScheduleResource(t *testing.T) {
 				Config: testAccScheduleResourceConfig(schedule2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(schedule2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(schedule2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("rrule"),
 						knownvalue.StringExact(schedule2.Rrule),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("unified_job_template"),
 						knownvalue.Int32Exact(int32(schedule2.UnifiedJobTemplate)),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_schedule.test",
+						fmt.Sprintf("%s_schedule.test", configprefix.Prefix),
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(schedule2.Enabled),
 					),
@@ -106,7 +107,7 @@ func TestAccScheduleResource(t *testing.T) {
 }
 
 func testAccScheduleResourceConfig(resource ScheduleAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_schedule" "test" {
   name        			= "%s"
   description 			= "%s"
@@ -114,5 +115,5 @@ resource "awx_schedule" "test" {
   unified_job_template 	= %d
   enabled     			= %t
 }
-  `, resource.Name, resource.Description, resource.Rrule, resource.UnifiedJobTemplate, resource.Enabled)
+  `, resource.Name, resource.Description, resource.Rrule, resource.UnifiedJobTemplate, resource.Enabled))
 }

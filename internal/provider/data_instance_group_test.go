@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -39,32 +40,32 @@ func TestAccInstanceGroupDataSource(t *testing.T) {
 				Config: testAccInstanceGroupDataSource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("is_container_group"),
 						knownvalue.Bool(false),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("max_concurrent_jobs"),
 						knownvalue.Int32Exact(0),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("max_forks"),
 						knownvalue.Int32Exact(0),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("policy_instance_minimum"),
 						knownvalue.Int32Exact(0),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-instance",
+						fmt.Sprintf("data.%s_instance_group.test-instance", configprefix.Prefix),
 						tfjsonpath.New("policy_instance_percentage"),
 						knownvalue.Int32Exact(int32(resource1.PolicyInstancePercentage)),
 					),
@@ -75,17 +76,17 @@ func TestAccInstanceGroupDataSource(t *testing.T) {
 				Config: testAccInstanceGroupDataSource2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-container",
+						fmt.Sprintf("data.%s_instance_group.test-container", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-container",
+						fmt.Sprintf("data.%s_instance_group.test-container", configprefix.Prefix),
 						tfjsonpath.New("is_container_group"),
 						knownvalue.Bool(resource2.IsContainerGroup),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_instance_group.test-container",
+						fmt.Sprintf("data.%s_instance_group.test-container", configprefix.Prefix),
 						tfjsonpath.New("pod_spec_override"),
 						knownvalue.StringExact(resource2podspecoverride),
 					),
@@ -96,7 +97,7 @@ func TestAccInstanceGroupDataSource(t *testing.T) {
 }
 
 func testAccInstanceGroupDataSource1Config(resource InstanceGroupAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_instance_group" "test-instance" {
   name                       = "%s"
   policy_instance_percentage = %d
@@ -104,11 +105,11 @@ resource "awx_instance_group" "test-instance" {
 data "awx_instance_group" "test-instance" {
   id = awx_instance_group.test-instance.id
 }
-`, resource.Name, resource.PolicyInstancePercentage)
+`, resource.Name, resource.PolicyInstancePercentage))
 }
 
 func testAccInstanceGroupDataSource2Config(resource InstanceGroupAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_instance_group" "test-container" {
   name       = "%s"
   is_container_group = %v
@@ -117,5 +118,5 @@ resource "awx_instance_group" "test-container" {
 data "awx_instance_group" "test-container" {
   id = awx_instance_group.test-container.id
 }
-`, resource.Name, resource.IsContainerGroup, resource.PodSpecOverride)
+`, resource.Name, resource.IsContainerGroup, resource.PodSpecOverride))
 }

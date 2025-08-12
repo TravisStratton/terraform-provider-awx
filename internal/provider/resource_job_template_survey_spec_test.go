@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/compare"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -27,24 +28,24 @@ func TestAccJobTemplateSurveySpec_basic(t *testing.T) {
 				Config: specTestCaseSetup(jtName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_job_template_survey_spec.example",
+						fmt.Sprintf("%s_job_template_survey_spec.example", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact("example description"),
 					),
 					statecheck.CompareValuePairs(
-						"awx_job_template.example",
+						fmt.Sprintf("%s_job_template.example", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_survey_spec.example",
+						fmt.Sprintf("%s_job_template_survey_spec.example", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						compare.ValuesSame(),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template_survey_spec.example",
+						fmt.Sprintf("%s_job_template_survey_spec.example", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(""),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_job_template_survey_spec.example",
+						fmt.Sprintf("%s_job_template_survey_spec.example", configprefix.Prefix),
 						tfjsonpath.New("spec"),
 						knownvalue.ListExact([]knownvalue.Check{
 							knownvalue.ObjectExact(map[string]knownvalue.Check{
@@ -103,7 +104,7 @@ func TestAccJobTemplateSurveySpec_basic(t *testing.T) {
 }
 
 func specTestCaseSetup(template_name string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
 	name = "%s"
 }
@@ -163,5 +164,5 @@ resource "awx_job_template_survey_spec" "example" {
     },
   ]
 }
-`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), template_name)
+`, acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), acctest.RandStringFromCharSet(5, acctest.CharSetAlpha), template_name))
 }

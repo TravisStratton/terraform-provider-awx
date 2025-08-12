@@ -3,12 +3,12 @@
 page_title: "awx_job_template_notification_template_success Resource - awx"
 subcategory: ""
 description: |-
-  Associate awx_notification_template(s) to a job template.
+  Associate notification template(s) to a job template.
 ---
 
 # awx_job_template_notification_template_success (Resource)
 
-Associate awx_notification_template(s) to a job template.
+Associate notification template(s) to a job template.
 
 ## Example Usage
 
@@ -25,7 +25,7 @@ resource "awx_job_template_notification_template_success" "example" {
 ### Required
 
 - `job_template_id` (String) The ID of the containing Job Template.
-- `notif_template_ids` (Set of Number) An unordered list of `awx_notification_template` IDs associated to a particular Job Template.
+- `notif_template_ids` (Set of Number) An unordered list of `Automation Controller_notification_template` IDs associated to a particular Job Template.
 
 ## Import
 

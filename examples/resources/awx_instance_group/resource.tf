@@ -26,7 +26,7 @@ resource "awx_instance_group" "example-container" {
               "worker",
               "--private-data-dir=/runner"
             ],
-            "image" : "quay.io/ansible/awx-ee:latest",
+            "image" : "quay.io/ansible/ee:latest",
             "name" : "worker",
             "resources" : {
               "requests" : {

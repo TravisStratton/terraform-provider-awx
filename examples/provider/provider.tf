@@ -8,7 +8,7 @@ terraform {
 
 provider "awx" {
   endpoint = "https://tower.example.com"
-  token    = "awxtoken"
+  token    = "token"
 }
 
 provider "awx" {

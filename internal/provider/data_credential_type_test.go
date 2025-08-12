@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -35,17 +36,17 @@ func TestAccCredentialTypeDataSource(t *testing.T) {
 				Config: testAccCredentialTypeDataSourceIDConfig(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-id",
+						fmt.Sprintf("data.%s_credential_type.test-id", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-id",
+						fmt.Sprintf("data.%s_credential_type.test-id", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-id",
+						fmt.Sprintf("data.%s_credential_type.test-id", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.StringExact(resource1.Kind),
 					),
@@ -56,17 +57,17 @@ func TestAccCredentialTypeDataSource(t *testing.T) {
 				Config: testAccCredentialTypeDataSourceNameConfig(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-name",
+						fmt.Sprintf("data.%s_credential_type.test-name", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-name",
+						fmt.Sprintf("data.%s_credential_type.test-name", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"data.awx_credential_type.test-name",
+						fmt.Sprintf("data.%s_credential_type.test-name", configprefix.Prefix),
 						tfjsonpath.New("kind"),
 						knownvalue.StringExact(resource2.Kind),
 					),
@@ -77,7 +78,7 @@ func TestAccCredentialTypeDataSource(t *testing.T) {
 }
 
 func testAccCredentialTypeDataSourceIDConfig(resource CredentialTypeAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_credential_type" "test-id" {
   name         = "%s"
   description  = "%s"
@@ -85,11 +86,11 @@ resource "awx_credential_type" "test-id" {
 data "awx_credential_type" "test-id" {
   id = awx_credential_type.test-id.id
 }
-  `, resource.Name, resource.Description)
+  `, resource.Name, resource.Description))
 }
 
 func testAccCredentialTypeDataSourceNameConfig(resource CredentialTypeAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_credential_type" "test-name" {
   name         = "%s"
   description  = "%s"
@@ -98,5 +99,5 @@ data "awx_credential_type" "test-name" {
   name = awx_credential_type.test-name.name
   kind = awx_credential_type.test-name.kind
 }
-  `, resource.Name, resource.Description)
+  `, resource.Name, resource.Description))
 }

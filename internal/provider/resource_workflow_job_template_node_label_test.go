@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -25,23 +26,23 @@ func TestAccWkflwJobTemplJobNodeLabelResource(t *testing.T) {
 				Config: testAccWkflwJobTemplJobNodeLabelResource1Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_workflow_job_template_job_node.test1",
+						fmt.Sprintf("%s_workflow_job_template_job_node.test1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_label.test",
+						fmt.Sprintf("%s_workflow_job_template_node_label.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_label.test1",
+						fmt.Sprintf("%s_label.test1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_label.test",
+						fmt.Sprintf("%s_workflow_job_template_node_label.test", configprefix.Prefix),
 						tfjsonpath.New("label_ids"),
 						StringListCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_label.test2",
+						fmt.Sprintf("%s_label.test2", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template_node_label.test",
+						fmt.Sprintf("%s_workflow_job_template_node_label.test", configprefix.Prefix),
 						tfjsonpath.New("label_ids"),
 						StringListCompare,
 					),
@@ -57,7 +58,7 @@ func TestAccWkflwJobTemplJobNodeLabelResource(t *testing.T) {
 }
 
 func testAccWkflwJobTemplJobNodeLabelResource1Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -108,5 +109,5 @@ resource "awx_workflow_job_template_node_label" "test" {
   id        = awx_workflow_job_template_job_node.test1.id
   label_ids = [awx_label.test1.id, awx_label.test2.id]
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

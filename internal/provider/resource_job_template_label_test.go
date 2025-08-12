@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/compare"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -28,16 +29,16 @@ func TestAccJobTemplateLabel_basic(t *testing.T) {
 				Config: testAccJobTemplateLabel1Config(testingJobTemplateName),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_label.test_label_1",
+						fmt.Sprintf("%s_label.test_label_1", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_label.test",
+						fmt.Sprintf("%s_job_template_label.test", configprefix.Prefix),
 						tfjsonpath.New("label_ids"),
 						stringListComparer,
 					),
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_label.test",
+						fmt.Sprintf("%s_job_template_label.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						compare.ValuesSame(),
 					),
@@ -55,7 +56,7 @@ func TestAccJobTemplateLabel_basic(t *testing.T) {
 }
 
 func testAccJobTemplateLabel1Config(jobTemplateName string) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -85,5 +86,5 @@ resource "awx_job_template_label" "test" {
 	label_ids = [awx_label.test_label_1.id]
 }
 
-  `, acctest.RandString(5), acctest.RandString(5), jobTemplateName)
+  `, acctest.RandString(5), acctest.RandString(5), jobTemplateName))
 }

@@ -22,7 +22,7 @@ func NewExecutionEnvironmentDataSource() datasource.DataSource {
 }
 
 type ExecutionEnvironmentDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *ExecutionEnvironmentDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -79,7 +79,7 @@ func (d *ExecutionEnvironmentDataSource) Configure(ctx context.Context, req data
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

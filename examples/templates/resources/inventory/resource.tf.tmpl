@@ -1,0 +1,21 @@
+resource "{{.Prefix}}_organization" "example" {
+  name        = "example"
+  description = "example"
+}
+
+resource "{{.Prefix}}_inventory" "example" {
+  name         = "example"
+  description  = "example"
+  organization = {{.Prefix}}_organization.example.id
+}
+
+resource "{{.Prefix}}_inventory" "example-variables" {
+  name         = "example_with_json_variables"
+  description  = "Example with jsonencoded variables"
+  organization = {{.Prefix}}_organization.example.id
+  variables = jsonencode(
+    {
+      foo = "bar"
+    }
+  )
+}

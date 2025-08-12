@@ -1,3 +1,4 @@
+// SPECIAL: This file may require repo or controller-specific things.
 package provider
 
 import (
@@ -26,7 +27,7 @@ func NewOrganizationResource() resource.Resource {
 }
 
 type OrganizationResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *OrganizationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -35,7 +36,7 @@ func (r *OrganizationResource) Metadata(ctx context.Context, req resource.Metada
 
 func (r *OrganizationResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX organization.`,
+		Description: `Manage an Automation Controller organization.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -109,7 +110,7 @@ func (r *OrganizationResource) Configure(ctx context.Context, req resource.Confi
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

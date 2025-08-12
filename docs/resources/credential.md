@@ -3,15 +3,15 @@
 page_title: "awx_credential Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX credential.
-  NOTE: The AWX API does not return encrypted secrets so changes made in AWX of the inputs field will be ignored.
+  Manage an Automation Controller credential.
+  NOTE: The automation controller API does not return encrypted secrets so changes made in the controller of the inputs field will be ignored.
   The only changes to the inputs field that will be sent are when the terraform code does not match the terraform state.
 ---
 
 # awx_credential (Resource)
 
-Manage an AWX credential. 
-NOTE: The AWX API does not return encrypted secrets so changes made in AWX of the inputs field will be ignored. 
+Manage an Automation Controller credential. 
+NOTE: The automation controller API does not return encrypted secrets so changes made in the controller of the inputs field will be ignored. 
 The only changes to the inputs field that will be sent are when the terraform code does not match the terraform state.
 
 ## Example Usage
@@ -117,7 +117,7 @@ resource "awx_credential" "example-container-registry" {
 Import is supported using the following syntax:
 
 ```shell
-# The inputs field contains values that are not returned by the AWX API and thus not available in state.
+# The inputs field contains values that are not returned by the automation controller API and thus not available in state.
 # The first plan/apply after import will result in a modification to the inputs so that the state can be updated.
 
 terraform import awx_credential.example 5

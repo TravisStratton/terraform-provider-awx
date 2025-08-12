@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -43,51 +44,51 @@ func TestAccInventorySourceResource(t *testing.T) {
 				Config: testAccInventorySourceResource1Config(inventory_source1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(inventory_source1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(inventory_source1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source"),
 						knownvalue.StringExact(inventory_source1.Source),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source_path"),
 						knownvalue.StringExact(inventory_source1.SourcePath),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("overwrite"),
 						knownvalue.Bool(inventory_source1.Overwrite),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("overwrite_vars"),
 						knownvalue.Bool(inventory_source1.OverwriteVars),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("update_on_launch"),
 						knownvalue.Bool(inventory_source1.UpdateOnLaunch),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source_project"),
 						IdCompare,
 					),
@@ -102,51 +103,51 @@ func TestAccInventorySourceResource(t *testing.T) {
 				Config: testAccInventorySourceResource2Config(inventory_source2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(inventory_source2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(inventory_source2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source"),
 						knownvalue.StringExact(inventory_source2.Source),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source_path"),
 						knownvalue.StringExact(inventory_source2.SourcePath),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("overwrite"),
 						knownvalue.Bool(inventory_source2.Overwrite),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("overwrite_vars"),
 						knownvalue.Bool(inventory_source2.OverwriteVars),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("update_on_launch"),
 						knownvalue.Bool(inventory_source2.UpdateOnLaunch),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_project.test",
+						fmt.Sprintf("%s_project.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_inventory_source.test",
+						fmt.Sprintf("%s_inventory_source.test", configprefix.Prefix),
 						tfjsonpath.New("source_project"),
 						IdCompare,
 					),
@@ -157,7 +158,7 @@ func TestAccInventorySourceResource(t *testing.T) {
 }
 
 func testAccInventorySourceResource1Config(resource InventorySourceAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -186,11 +187,11 @@ resource "awx_inventory_source" "test" {
   update_on_launch 		= %v
   execution_environment = %v
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Source, resource.SourcePath, resource.Overwrite, resource.OverwriteVars, resource.UpdateOnLaunch, resource.ExecutionEnvironment)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Source, resource.SourcePath, resource.Overwrite, resource.OverwriteVars, resource.UpdateOnLaunch, resource.ExecutionEnvironment))
 }
 
 func testAccInventorySourceResource2Config(resource InventorySourceAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -218,5 +219,5 @@ resource "awx_inventory_source" "test" {
   overwrite_vars   		= %v
   update_on_launch 		= %v
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Source, resource.SourcePath, resource.Overwrite, resource.OverwriteVars, resource.UpdateOnLaunch)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Source, resource.SourcePath, resource.Overwrite, resource.OverwriteVars, resource.UpdateOnLaunch))
 }

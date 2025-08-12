@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -24,9 +25,9 @@ func TestAccJobTemplateCredentialResource(t *testing.T) {
 				Config: testAccJobTemplateCredentialResource1Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_credential.test",
+						fmt.Sprintf("%s_job_template_credential.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
@@ -43,9 +44,9 @@ func TestAccJobTemplateCredentialResource(t *testing.T) {
 				Config: testAccJobTemplateCredentialResource2Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_credential.test",
+						fmt.Sprintf("%s_job_template_credential.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
@@ -56,7 +57,7 @@ func TestAccJobTemplateCredentialResource(t *testing.T) {
 }
 
 func testAccJobTemplateCredentialResource1Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -96,11 +97,11 @@ resource "awx_job_template_credential" "test" {
   credential_ids  = [ awx_credential.test.id ]
   job_template_id = awx_job_template.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccJobTemplateCredentialResource2Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -154,5 +155,5 @@ resource "awx_job_template_credential" "test" {
   credential_ids  = [ awx_credential.test1.id, awx_credential.test2.id ]
   job_template_id = awx_job_template.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

@@ -3,12 +3,12 @@
 page_title: "awx_project Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX project.
+  Manage an Automation Controller project.
 ---
 
 # awx_project (Resource)
 
-Manage an AWX project.
+Manage an Automation Controller project.
 
 ## Example Usage
 
@@ -43,7 +43,7 @@ resource "awx_project" "example-manual" {
   name         = "example_manual"
   organization = awx_organization.example.id
   scm_type     = "manual"
-  local_path   = "directory/on/awx"
+  local_path   = "directory/on/controller"
 }
 
 data "awx_credential" "example-insights" {

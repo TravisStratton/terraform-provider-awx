@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -25,7 +26,7 @@ func NewWorkflowJobTemplateApprovalNodeResource() resource.Resource {
 }
 
 type WorkflowJobTemplateApprovalNode struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type WorkflowJobTemplateApprovalNodeModel struct {
@@ -49,7 +50,7 @@ func (r *WorkflowJobTemplateApprovalNode) Metadata(ctx context.Context, req reso
 
 func (r *WorkflowJobTemplateApprovalNode) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "To add an approval node/step to an existing workflow job template a new node will be created and a small template will be added to that node. You'll need to create an awx_workflow_job_template_node_success resource (or always/failure) in order to make this approval node execute in the sequence you want your visualizer nodes to run.",
+		Description: "To add an approval node/step to an existing workflow job template a new node will be created and a small template will be added to that node. You'll need to create an " + configprefix.Prefix + "_workflow_job_template_node_success resource (or always/failure) in order to make this approval node execute in the sequence you want your visualizer nodes to run.",
 
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -68,7 +69,7 @@ func (r *WorkflowJobTemplateApprovalNode) Schema(ctx context.Context, req resour
 			},
 			"workflow_job_template_id": schema.Int32Attribute{
 				Required:    true,
-				Description: "This the ID for the `awx_workflow_job_template` for which this approval node/template should be embedded.",
+				Description: "This the ID for the `Automation Controller_workflow_job_template` for which this approval node/template should be embedded.",
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -93,7 +94,7 @@ func (r *WorkflowJobTemplateApprovalNode) Configure(ctx context.Context, req res
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

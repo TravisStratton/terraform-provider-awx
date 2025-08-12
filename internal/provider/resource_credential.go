@@ -24,7 +24,7 @@ func NewCredentialResource() resource.Resource {
 }
 
 type CredentialResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (r *CredentialResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -33,8 +33,8 @@ func (r *CredentialResource) Metadata(ctx context.Context, req resource.Metadata
 
 func (r *CredentialResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Manage an AWX credential. 
-NOTE: The AWX API does not return encrypted secrets so changes made in AWX of the inputs field will be ignored. 
+		Description: `Manage an Automation Controller credential. 
+NOTE: The automation controller API does not return encrypted secrets so changes made in the controller of the inputs field will be ignored. 
 The only changes to the inputs field that will be sent are when the terraform code does not match the terraform state.`,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
@@ -99,7 +99,7 @@ func (r *CredentialResource) Configure(ctx context.Context, req resource.Configu
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Resource Configure Type",

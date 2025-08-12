@@ -22,7 +22,7 @@ func NewInstanceGroupDataSource() datasource.DataSource {
 }
 
 type InstanceGroupDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *InstanceGroupDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -88,7 +88,7 @@ func (d *InstanceGroupDataSource) Configure(ctx context.Context, req datasource.
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

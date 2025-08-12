@@ -19,7 +19,7 @@ func NewScheduleDataSource() datasource.DataSource {
 }
 
 type ScheduleDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *ScheduleDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -63,7 +63,7 @@ func (d *ScheduleDataSource) Configure(ctx context.Context, req datasource.Confi
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

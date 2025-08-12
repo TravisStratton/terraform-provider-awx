@@ -22,7 +22,7 @@ func NewGroupDataSource() datasource.DataSource {
 }
 
 type GroupDataSource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 func (d *GroupDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
@@ -75,11 +75,11 @@ func (d *GroupDataSource) Configure(ctx context.Context, req datasource.Configur
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 	if !ok {
 		resp.Diagnostics.AddError(
 			"Unexpected Data Source Configure Type",
-			fmt.Sprintf("Expected *AwxClient, got: %T. Please report this issue to the provider developers.", req.ProviderData),
+			fmt.Sprintf("Expected *providerClient, got: %T. Please report this issue to the provider developers.", req.ProviderData),
 		)
 		return
 	}

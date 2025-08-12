@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -38,22 +39,22 @@ func TestAccHostResource(t *testing.T) {
 				Config: testAccHostResourceConfig(host1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(host1.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(host1.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(host1.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(host1.Enabled),
 					),
@@ -68,22 +69,22 @@ func TestAccHostResource(t *testing.T) {
 				Config: testAccHostResourceConfig(host2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(host2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(host2.Description),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("variables"),
 						knownvalue.StringExact(host2.Variables),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_host.test",
+						fmt.Sprintf("%s_host.test", configprefix.Prefix),
 						tfjsonpath.New("enabled"),
 						knownvalue.Bool(host1.Enabled),
 					),
@@ -94,7 +95,7 @@ func TestAccHostResource(t *testing.T) {
 }
 
 func testAccHostResourceConfig(resource HostAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "test-organization-%s"
   description = "test"
@@ -110,5 +111,5 @@ resource "awx_host" "test" {
   inventory   = awx_inventory.test.id
   variables   = jsonencode(%s)
 }
-  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables)
+  `, acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description, resource.Variables))
 }

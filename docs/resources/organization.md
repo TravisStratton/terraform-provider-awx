@@ -3,12 +3,12 @@
 page_title: "awx_organization Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX organization.
+  Manage an Automation Controller organization.
 ---
 
 # awx_organization (Resource)
 
-Manage an AWX organization.
+Manage an Automation Controller organization.
 
 ## Example Usage
 

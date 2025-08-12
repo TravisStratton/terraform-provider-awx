@@ -3,12 +3,12 @@
 page_title: "awx_user Resource - awx"
 subcategory: ""
 description: |-
-  Manage an AWX user.
+  Manage an Automation Controller user.
 ---
 
 # awx_user (Resource)
 
-Manage an AWX user.
+Manage an Automation Controller user.
 
 ## Example Usage
 
@@ -28,7 +28,7 @@ resource "awx_user" "example" {
 
 ### Required
 
-- `password` (String) User's password. If the password is updated in AWX, due to the AWX api, terraform will not know that it has been changed.
+- `password` (String) User's password. If the password is updated in automation controller, due to the api, terraform will not know that it has been changed.
 - `username` (String) The username of the user.
 
 ### Optional
@@ -48,7 +48,7 @@ resource "awx_user" "example" {
 Import is supported using the following syntax:
 
 ```shell
-# The password field contains values that are not returned by the AWX API and thus not available in state.
+# The password field contains values that are not returned by the automation controller API and thus not available in state.
 # The first plan/apply after import will result in a modification to the password so that the state can be updated.
 
 terraform import awx_user.example 1

@@ -22,7 +22,7 @@ func NewJobTemplateLabelsResource() resource.Resource {
 }
 
 type JobTemplateLabelsResource struct {
-	client *AwxClient
+	client *providerClient
 }
 
 type JobTemplateLabelsResourceModel struct {
@@ -44,7 +44,7 @@ func (r *JobTemplateLabelsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"label_ids": schema.SetAttribute{
 				Required:    true,
-				Description: "An unordered list of label IDs associated to a particular Job Template. Create new labels first with `awx_label` resource type.",
+				Description: "An unordered list of label IDs associated to a particular Job Template. Create new labels first with `Automation Controller_label` resource type.",
 				ElementType: types.Int32Type,
 			},
 		},
@@ -56,7 +56,7 @@ func (r *JobTemplateLabelsResource) Configure(ctx context.Context, req resource.
 		return
 	}
 
-	configureData, ok := req.ProviderData.(*AwxClient)
+	configureData, ok := req.ProviderData.(*providerClient)
 
 	if !ok {
 		resp.Diagnostics.AddError(

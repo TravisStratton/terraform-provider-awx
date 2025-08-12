@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -24,9 +25,9 @@ func TestAccJobTemplateInstanceGroupResource(t *testing.T) {
 				Config: testAccJobTemplateInstanceGroupResource1Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_instance_group.test",
+						fmt.Sprintf("%s_job_template_instance_group.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
@@ -43,9 +44,9 @@ func TestAccJobTemplateInstanceGroupResource(t *testing.T) {
 				Config: testAccJobTemplateInstanceGroupResource2Config(),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.CompareValuePairs(
-						"awx_job_template.test",
+						fmt.Sprintf("%s_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_job_template_instance_group.test",
+						fmt.Sprintf("%s_job_template_instance_group.test", configprefix.Prefix),
 						tfjsonpath.New("job_template_id"),
 						IdCompare,
 					),
@@ -56,7 +57,7 @@ func TestAccJobTemplateInstanceGroupResource(t *testing.T) {
 }
 
 func testAccJobTemplateInstanceGroupResource1Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -85,11 +86,11 @@ resource "awx_job_template_instance_group" "test" {
   instance_groups_ids  = [ awx_instance_group.test.id ]
   job_template_id      = awx_job_template.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }
 
 func testAccJobTemplateInstanceGroupResource2Config() string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -121,5 +122,5 @@ resource "awx_job_template_instance_group" "test" {
   instance_groups_ids  = [ awx_instance_group.test1.id, awx_instance_group.test2.id ]
   job_template_id      = awx_job_template.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5))
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5)))
 }

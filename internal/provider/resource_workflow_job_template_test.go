@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/TravisStratton/terraform-provider-awx/internal/configprefix"
 	"github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -32,21 +33,21 @@ func TestAccWorkflowJobTemplateResource(t *testing.T) {
 				Config: testAccWorkflowJobTemplateResource1Config(resource1),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource1.Name),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -61,26 +62,26 @@ func TestAccWorkflowJobTemplateResource(t *testing.T) {
 				Config: testAccWorkflowJobTemplateResource2Config(resource2),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("name"),
 						knownvalue.StringExact(resource2.Name),
 					),
 					statecheck.ExpectKnownValue(
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("description"),
 						knownvalue.StringExact(resource2.Description),
 					),
 					statecheck.CompareValuePairs(
-						"awx_inventory.test",
+						fmt.Sprintf("%s_inventory.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("inventory"),
 						IdCompare,
 					),
 					statecheck.CompareValuePairs(
-						"awx_organization.test",
+						fmt.Sprintf("%s_organization.test", configprefix.Prefix),
 						tfjsonpath.New("id"),
-						"awx_workflow_job_template.test",
+						fmt.Sprintf("%s_workflow_job_template.test", configprefix.Prefix),
 						tfjsonpath.New("organization"),
 						IdCompare,
 					),
@@ -91,7 +92,7 @@ func TestAccWorkflowJobTemplateResource(t *testing.T) {
 }
 
 func testAccWorkflowJobTemplateResource1Config(resource WorkflowJobTemplateAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -117,11 +118,11 @@ resource "awx_workflow_job_template" "test" {
   inventory    = awx_inventory.test.id
   organization = awx_organization.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name))
 }
 
 func testAccWorkflowJobTemplateResource2Config(resource WorkflowJobTemplateAPIModel) string {
-	return fmt.Sprintf(`
+	return configprefix.ReplaceText(fmt.Sprintf(`
 resource "awx_organization" "test" {
   name        = "%s"
 }
@@ -148,5 +149,5 @@ resource "awx_workflow_job_template" "test" {
   inventory    = awx_inventory.test.id
   organization = awx_organization.test.id
 }
-  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description)
+  `, acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), acctest.RandString(5), resource.Name, resource.Description))
 }
