@@ -57,7 +57,7 @@ func (p *awxProvider) Metadata(ctx context.Context, req provider.MetadataRequest
 
 func (p *awxProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: "This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).",
+		Description: "DEPRECATED AS OF AUGUST 2025. See tfbrew/aap (for AAP 2.5+) or tfbrew/awx (for AWX & AAP 2.4) for supported providers.",
 		Attributes: map[string]schema.Attribute{
 			"endpoint": schema.StringAttribute{
 				Description: "URL for AWX (i.e. https://tower.example.com)",
@@ -124,6 +124,11 @@ func (p *awxProvider) ConfigValidators(ctx context.Context) []provider.ConfigVal
 }
 
 func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+	resp.Diagnostics.AddWarning(
+		"Provider Deprecated",
+		"This provider is deprecated as of August 2025, Please migrate to either tfbrew/awx (AWX or AAP 2.4) or tfbrew/aap (AAP 2.5+) which are actively maintained and based off this provider.",
+	)
+
 	var (
 		token, endpoint, username, password, auth, platform string
 	)

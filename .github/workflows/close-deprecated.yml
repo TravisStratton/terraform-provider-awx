@@ -1,0 +1,46 @@
+name: Close New Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  close_issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const message = `
+            This provider is **deprecated**. See [https://github.com/TravisStratton/terraform-provider-awx/issues/141] for more details.
+
+            Please utilize one of the following:
+
+            - **tfbrew/aap** (for AAP 2.5+):  
+              - [GitHub Repository](https://github.com/tfbrew/aap)  
+              - [Terraform Registry](https://registry.terraform.io/providers/tfbrew/aap/latest)
+
+            - **tfbrew/awx** (for AWX & AAP 2.4):  
+              - [GitHub Repository](https://github.com/tfbrew/awx)  
+              - [Terraform Registry](https://registry.terraform.io/providers/tfbrew/awx/latest)
+            `;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });
+
+      - name: Close issue
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.update({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "closed"
+            });

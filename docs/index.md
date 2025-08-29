@@ -3,12 +3,12 @@
 page_title: "awx Provider"
 subcategory: ""
 description: |-
-  This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).
+  DEPRECATED AS OF AUGUST 2025. See tfbrew/aap (for AAP 2.5+) or tfbrew/awx (for AWX & AAP 2.4) for supported providers.
 ---
 
 # awx Provider
 
-This is a Terraform Provider for managing resources in AWX/Tower or Ansible Automation Platform (AAP).
+DEPRECATED AS OF AUGUST 2025. See tfbrew/aap (for AAP 2.5+) or tfbrew/awx (for AWX & AAP 2.4) for supported providers.
 
 ## Example Usage
 
