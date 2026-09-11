@@ -124,7 +124,7 @@ func (p *awxProvider) ConfigValidators(ctx context.Context) []provider.ConfigVal
 }
 
 func (p *awxProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
-	resp.Diagnostics.AddWarning(
+	resp.Diagnostics.AddError(
 		"Provider Deprecated",
 		"This provider is deprecated as of August 2025, Please migrate to either tfbrew/awx (AWX or AAP 2.4) or tfbrew/aap (AAP 2.5+) which are actively maintained and based off this provider.",
 	)
